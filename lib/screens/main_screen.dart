@@ -37,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
           color: AppColors.surface,
           boxShadow: [
             BoxShadow(
-              color: AppColors.outlineVariant.withOpacity(0.5),
+              color: AppColors.outlineVariant.withValues(alpha: 0.5),
               blurRadius: 1,
               offset: const Offset(0, -1),
             ),

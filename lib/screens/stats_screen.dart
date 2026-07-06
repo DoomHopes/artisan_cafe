@@ -70,7 +70,7 @@ class StatsScreen extends StatelessWidget {
                       border: Border.all(color: AppColors.outlineVariant),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primaryContainer.withOpacity(0.05),
+                          color: AppColors.primaryContainer.withValues(alpha: 0.05),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
                         ),
@@ -103,7 +103,7 @@ class StatsScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primaryContainer.withOpacity(0.05),
+                          color: AppColors.primaryContainer.withValues(alpha: 0.05),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
                         ),
@@ -140,7 +140,7 @@ class StatsScreen extends StatelessWidget {
                 border: Border.all(color: AppColors.outlineVariant),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primaryContainer.withOpacity(0.05),
+                    color: AppColors.primaryContainer.withValues(alpha: 0.05),
                     blurRadius: 24,
                     offset: const Offset(0, 8),
                   ),
@@ -272,7 +272,7 @@ class StatsScreen extends StatelessWidget {
               width: double.infinity,
               height: 160 * percent,
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(isHighlight ? 0.3 : 0.0),
+                color: AppColors.primary.withValues(alpha: isHighlight ? 0.3 : 0.0),
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
               ),
             ),

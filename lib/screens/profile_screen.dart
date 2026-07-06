@@ -67,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         border: Border.all(color: AppColors.surfaceContainerLowest, width: 4),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primaryContainer.withOpacity(0.08),
+                            color: AppColors.primaryContainer.withValues(alpha: 0.08),
                             blurRadius: 24,
                             offset: const Offset(0, 8),
                           ),
@@ -90,7 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: AppColors.primaryContainer.withOpacity(0.08),
+                              color: AppColors.primaryContainer.withValues(alpha: 0.08),
                               blurRadius: 24,
                               offset: const Offset(0, 8),
                             ),
@@ -143,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       borderRadius: BorderRadius.circular(32),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primaryContainer.withOpacity(0.08),
+                          color: AppColors.primaryContainer.withValues(alpha: 0.08),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
                         ),
@@ -226,7 +226,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Switch(
                         value: _remindersEnabled,
                         onChanged: (val) => setState(() => _remindersEnabled = val),
-                        activeColor: AppColors.onPrimary,
+                        activeThumbColor: AppColors.onPrimary,
                         activeTrackColor: AppColors.primaryContainer,
                       ),
                     ],
@@ -303,7 +303,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primaryContainer.withOpacity(0.08),
+                    color: AppColors.primaryContainer.withValues(alpha: 0.08),
                     blurRadius: 24,
                     offset: const Offset(0, 8),
                   ),
@@ -315,7 +315,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: AppColors.onPrimary.withOpacity(0.1),
+                      color: AppColors.onPrimary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Icon(Icons.download, color: AppColors.onPrimary),
@@ -326,7 +326,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Export Data', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onPrimary, fontSize: 14)),
-                        Text('Download brew history as CSV', style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.onPrimary.withOpacity(0.7))),
+                        Text('Download brew history as CSV', style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.onPrimary.withValues(alpha: 0.7))),
                       ],
                     ),
                   ),

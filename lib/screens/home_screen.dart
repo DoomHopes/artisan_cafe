@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../theme/app_colors.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -100,12 +101,12 @@ class HomeScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: AppColors.surface.withOpacity(0.7),
+                color: AppColors.surface.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.secondaryContainer.withOpacity(0.5)),
+                border: Border.all(color: AppColors.secondaryContainer.withValues(alpha: 0.5)),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primaryContainer.withOpacity(0.08),
+                    color: AppColors.primaryContainer.withValues(alpha: 0.08),
                     blurRadius: 24,
                     offset: const Offset(0, 8),
                   ),
@@ -300,7 +301,9 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          context.push('/add_drink');
+        },
         shape: const CircleBorder(),
         child: const Icon(Icons.add, size: 32),
       ),
