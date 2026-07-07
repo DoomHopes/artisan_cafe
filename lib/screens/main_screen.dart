@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme/app_colors.dart';
+import '../core/theme/app_colors.dart';
 import 'home_screen.dart';
 import 'history_screen.dart';
 import 'stats_screen.dart';
