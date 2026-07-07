@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../core/theme/app_colors.dart';
+import '../providers/add_brew_provider.dart';
 
-class BrewDetailsScreen extends StatefulWidget {
+class BrewDetailsScreen extends ConsumerStatefulWidget {
   const BrewDetailsScreen({super.key});
 
   @override
-  State<BrewDetailsScreen> createState() => _BrewDetailsScreenState();
+  ConsumerState<BrewDetailsScreen> createState() => _BrewDetailsScreenState();
 }
 
-class _BrewDetailsScreenState extends State<BrewDetailsScreen> {
-  String _selectedOrigin = 'Ethiopia';
-  String _selectedRoast = 'Medium';
-  String _selectedMethod = 'v60';
+class _BrewDetailsScreenState extends ConsumerState<BrewDetailsScreen> {
+  late String _selectedOrigin;
+  late String _selectedRoast;
+  late String _selectedMethod;
+
+  @override
+  void initState() {
+    super.initState();
+    final initialState = ref.read(addBrewWizardProvider);
+    _selectedOrigin = initialState.origin;
+    _selectedRoast = initialState.roastLevel;
+    _selectedMethod = initialState.brewMethod;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +124,14 @@ class _BrewDetailsScreenState extends State<BrewDetailsScreen> {
           width: double.infinity,
           height: 56,
           child: ElevatedButton(
-            onPressed: () => context.push('/add_drink/review'),
+            onPressed: () {
+              ref.read(addBrewWizardProvider.notifier).updateDetails(
+                origin: _selectedOrigin,
+                roastLevel: _selectedRoast,
+                brewMethod: _selectedMethod,
+              );
+              context.push('/add_drink/review');
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryContainer,
               foregroundColor: AppColors.onPrimary,

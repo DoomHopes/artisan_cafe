@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../core/theme/app_colors.dart';
+import '../providers/add_brew_provider.dart';
 
-class ReviewBrewScreen extends StatefulWidget {
+class ReviewBrewScreen extends ConsumerStatefulWidget {
   const ReviewBrewScreen({super.key});
 
   @override
-  State<ReviewBrewScreen> createState() => _ReviewBrewScreenState();
+  ConsumerState<ReviewBrewScreen> createState() => _ReviewBrewScreenState();
 }
 
-class _ReviewBrewScreenState extends State<ReviewBrewScreen> {
+class _ReviewBrewScreenState extends ConsumerState<ReviewBrewScreen> {
   bool _isLogging = false;
 
   void _handleLogBrew() async {
     setState(() => _isLogging = true);
-    await Future.delayed(const Duration(milliseconds: 1200));
+    await ref.read(addBrewWizardProvider.notifier).logBrew();
     if (mounted) {
       context.go('/');
     }
@@ -22,6 +24,9 @@ class _ReviewBrewScreenState extends State<ReviewBrewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final brewState = ref.watch(addBrewWizardProvider);
+    final dynamicCaffeine = ref.read(addBrewWizardProvider.notifier).calculateCaffeine();
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -95,15 +100,16 @@ class _ReviewBrewScreenState extends State<ReviewBrewScreen> {
                     children: [
                       Text('BREW SUMMARY', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onSurfaceVariant, letterSpacing: 1.2)),
                       const SizedBox(height: 4),
-                      Text('Cappuccino, Medium', style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.primary)),
+                      Text('${brewState.name.isEmpty ? 'Custom Drink' : brewState.name}, ${brewState.roastLevel}', style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.primary)),
                       const SizedBox(height: 16),
                       Wrap(
                         spacing: 8,
                         runSpacing: 8,
                         children: [
-                          _buildSummaryChip(Icons.location_on, 'Ethiopia Yirgacheffe'),
-                          _buildSummaryChip(Icons.local_fire_department, 'Light Roast'),
-                          _buildSummaryChip(Icons.water_drop, 'Oat Milk'),
+                          _buildSummaryChip(Icons.location_on, brewState.origin),
+                          _buildSummaryChip(Icons.local_fire_department, '${brewState.roastLevel} Roast'),
+                          if (brewState.isMilkBased) _buildSummaryChip(Icons.water_drop, 'Milk based'),
+                          _buildSummaryChip(Icons.coffee_maker, brewState.brewMethod.replaceAll('_', ' ').toUpperCase()),
                         ],
                       ),
                     ],
@@ -142,7 +148,7 @@ class _ReviewBrewScreenState extends State<ReviewBrewScreen> {
                             crossAxisAlignment: CrossAxisAlignment.baseline,
                             textBaseline: TextBaseline.alphabetic,
                             children: [
-                              Text('120', style: Theme.of(context).textTheme.displayMedium?.copyWith(color: AppColors.surface, fontSize: 40)),
+                              Text('$dynamicCaffeine', style: Theme.of(context).textTheme.displayMedium?.copyWith(color: AppColors.surface, fontSize: 40)),
                               const SizedBox(width: 4),
                               Text('mg', style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColors.surfaceDim)),
                             ],

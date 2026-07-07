@@ -1,18 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../core/theme/app_colors.dart';
+import '../providers/add_brew_provider.dart';
 
-class CustomDrinkScreen extends StatefulWidget {
+class CustomDrinkScreen extends ConsumerStatefulWidget {
   const CustomDrinkScreen({super.key});
 
   @override
-  State<CustomDrinkScreen> createState() => _CustomDrinkScreenState();
+  ConsumerState<CustomDrinkScreen> createState() => _CustomDrinkScreenState();
 }
 
-class _CustomDrinkScreenState extends State<CustomDrinkScreen> {
-  double _strength = 3;
-  String _selectedVolume = '240ml';
-  bool _isMilkBased = false;
+class _CustomDrinkScreenState extends ConsumerState<CustomDrinkScreen> {
+  late final TextEditingController _nameController;
+  late double _strength;
+  late String _selectedVolume;
+  late bool _isMilkBased;
+
+  @override
+  void initState() {
+    super.initState();
+    final initialState = ref.read(addBrewWizardProvider);
+    _nameController = TextEditingController(text: initialState.name);
+    _strength = initialState.strength;
+    _selectedVolume = initialState.volume;
+    _isMilkBased = initialState.isMilkBased;
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
 
   final List<String> _strengthLabels = ["Subtle", "Light", "Moderate", "Bold", "Extra Strong"];
 
@@ -86,6 +105,7 @@ class _CustomDrinkScreenState extends State<CustomDrinkScreen> {
             Text('Drink Name', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onSurfaceVariant)),
             const SizedBox(height: 8),
             TextField(
+              controller: _nameController,
               decoration: InputDecoration(
                 hintText: 'e.g., Honey Lavender Latte',
                 hintStyle: TextStyle(color: AppColors.onSurfaceVariant.withValues(alpha: 0.5)),
@@ -216,7 +236,15 @@ class _CustomDrinkScreenState extends State<CustomDrinkScreen> {
           width: double.infinity,
           height: 56,
           child: ElevatedButton(
-            onPressed: () => context.push('/add_drink/details'),
+            onPressed: () {
+              ref.read(addBrewWizardProvider.notifier).updateDrink(
+                name: _nameController.text.trim(),
+                strength: _strength,
+                volume: _selectedVolume,
+                isMilkBased: _isMilkBased,
+              );
+              context.push('/add_drink/details');
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryContainer,
               foregroundColor: AppColors.onPrimary,

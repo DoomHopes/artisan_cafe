@@ -9,11 +9,17 @@ part of 'brew_history_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(BrewHistory)
+@ProviderFor(brewHistory)
 final brewHistoryProvider = BrewHistoryProvider._();
 
 final class BrewHistoryProvider
-    extends $NotifierProvider<BrewHistory, List<Brew>> {
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Brew>>,
+          List<Brew>,
+          FutureOr<List<Brew>>
+        >
+    with $FutureModifier<List<Brew>>, $FutureProvider<List<Brew>> {
   BrewHistoryProvider._()
     : super(
         from: null,
@@ -30,33 +36,13 @@ final class BrewHistoryProvider
 
   @$internal
   @override
-  BrewHistory create() => BrewHistory();
+  $FutureProviderElement<List<Brew>> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
 
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(List<Brew> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<List<Brew>>(value),
-    );
-  }
-}
-
-String _$brewHistoryHash() => r'c9a219f721f394f1c378d74abd0f96e37b509c66';
-
-abstract class _$BrewHistory extends $Notifier<List<Brew>> {
-  List<Brew> build();
-  @$mustCallSuper
   @override
-  WhenComplete runBuild() {
-    final ref = this.ref as $Ref<List<Brew>, List<Brew>>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<List<Brew>, List<Brew>>,
-              List<Brew>,
-              Object?,
-              Object?
-            >;
-    return element.handleCreate(ref, build);
+  FutureOr<List<Brew>> create(Ref ref) {
+    return brewHistory(ref);
   }
 }
+
+String _$brewHistoryHash() => r'd3e3f17729ad777d22b42e52f57e525aefd71184';
