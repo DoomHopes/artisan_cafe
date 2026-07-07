@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../core/theme/app_colors.dart';
+import '../core/constants/app_images.dart';
 import '../providers/add_brew_provider.dart';
 
 class CustomDrinkScreen extends ConsumerStatefulWidget {
@@ -68,8 +69,7 @@ class _CustomDrinkScreenState extends ConsumerState<CustomDrinkScreen> {
                   BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 4, offset: const Offset(0, 2)),
                 ],
                 image: const DecorationImage(
-                  image: NetworkImage(
-                      'https://lh3.googleusercontent.com/aida-public/AB6AXuBH3ThoyHJdWAlVidr0LGTkfV1KR9tIooMSmrFCttWcPfazN6gzWIiBkNaana8jfdZ1Oozo2-NlEKb077A5zsyT0bEnP4E--P0RwlYtH9qflEzMhCovixqtH4TFVuiFKh9EOix_hhz89iLHK3cKiBoPKzsOv02lMXVM7l8AHsacMt3KmvcWIOJ-wpKU34PHCVaycAxOsMk5iXP9spa4thsb0py9wOsNEBjL7yXEypsMRxpskyokK55ejrHtvGmLVlzAo3o3VtMPWJui'),
+                  image: NetworkImage(AppImages.customDrinkBg),
                   fit: BoxFit.cover,
                 ),
               ),

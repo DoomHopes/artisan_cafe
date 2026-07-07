@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import '../core/theme/app_colors.dart';
+import '../core/constants/app_images.dart';
+import '../providers/brew_history_provider.dart';
+import '../models/brew.dart';
 
-class HistoryScreen extends StatelessWidget {
+class HistoryScreen extends ConsumerWidget {
   const HistoryScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final brewsAsync = ref.watch(brewHistoryProvider);
+
     return Scaffold(
       backgroundColor: AppColors.surface,
       appBar: AppBar(
@@ -33,8 +40,7 @@ class HistoryScreen extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: AppColors.surfaceContainerHigh,
                 image: const DecorationImage(
-                  image: NetworkImage(
-                      'https://lh3.googleusercontent.com/aida-public/AB6AXuDNouNIKRf-blWvybGod2s2e5x8okgdQ8OY4aGDY-J5CNkhT81MszxWf_leibS80BrEK5O7Dy2jHU9kkH3uaSCRhc1um9V2xn9uAilWmB6N8XHC7xyEaA7bK6G6uxdIIMmjVSGZpiKaEd3-9aTCE159-faqZ6NlKPDvQbRBiFSK3AcQCVMGL-MPrg7SOe2HTNhix5Akbvgf8e1znWR0ftifzWGutAT9xxcX9wB4pSWjqebZFK2fkG6_EmZsHuhcDyY1EDuQ4_6tijyk'),
+                  image: NetworkImage(AppImages.historyAvatar),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -42,206 +48,231 @@ class HistoryScreen extends StatelessWidget {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // History Header & Stats Summary
-            Text(
-              'Brew History',
-              style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontSize: 28),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Your coffee journey, curated cup by cup.',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.onSurfaceVariant),
-            ),
-            const SizedBox(height: 24),
+      body: brewsAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(child: Text('Error: $err')),
+        data: (brews) {
+          final today = DateTime.now();
+          final todayMidnight = DateTime(today.year, today.month, today.day);
+          
+          final todayBrews = brews.where((b) => 
+            b.createdAt.year == today.year && 
+            b.createdAt.month == today.month && 
+            b.createdAt.day == today.day
+          ).toList();
+          
+          final todayCaffeine = todayBrews.fold<int>(0, (sum, b) => sum + b.caffeine);
+          final totalCups = brews.length;
+          
+          String avgRoast = "N/A";
+          String mostDrunk = "N/A";
+          String peakTime = "N/A";
+          
+          if (brews.isNotEmpty) {
+            final roastCounts = <String, int>{};
+            final nameCounts = <String, int>{};
+            final hourCounts = <String, int>{};
+            
+            for (var b in brews) {
+              roastCounts[b.roastLevel] = (roastCounts[b.roastLevel] ?? 0) + 1;
+              final name = b.name.isNotEmpty ? b.name : 'Custom Drink';
+              nameCounts[name] = (nameCounts[name] ?? 0) + 1;
+              final hour = DateFormat('hh:00 a').format(b.createdAt);
+              hourCounts[hour] = (hourCounts[hour] ?? 0) + 1;
+            }
+            
+            avgRoast = roastCounts.entries.reduce((a, b) => a.value > b.value ? a : b).key;
+            mostDrunk = nameCounts.entries.reduce((a, b) => a.value > b.value ? a : b).key;
+            peakTime = hourCounts.entries.reduce((a, b) => a.value > b.value ? a : b).key;
+          }
 
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              clipBehavior: Clip.none,
-              child: Row(
+          final groupedBrews = <String, List<Brew>>{};
+          for (var b in brews) {
+            final dateStr = DateFormat('yyyy-MM-dd').format(b.createdAt);
+            groupedBrews.putIfAbsent(dateStr, () => []).add(b);
+          }
+          final sortedDates = groupedBrews.keys.toList()..sort((a,b) => b.compareTo(a));
+          
+          List<Widget> timelineWidgets = [];
+          for (var dateStr in sortedDates) {
+            final dateBrews = groupedBrews[dateStr]!;
+            final dateObj = DateTime.parse(dateStr);
+            final difference = todayMidnight.difference(dateObj).inDays;
+            
+            String headerText = DateFormat('MMMM d, yyyy').format(dateObj);
+            bool isHighlighted = false;
+            
+            if (difference == 0) {
+               headerText = "Today";
+               isHighlighted = true;
+            } else if (difference == 1) {
+               headerText = "Yesterday";
+            }
+            
+            timelineWidgets.add(_buildTimelineHeader(context, headerText, isHighlighted: isHighlighted));
+            timelineWidgets.add(const SizedBox(height: 16));
+            
+            List<Widget> itemWidgets = [];
+            for (var b in dateBrews) {
+              itemWidgets.add(_buildHistoryItem(
+                context,
+                icon: Icons.coffee,
+                iconBgColor: AppColors.secondaryContainer,
+                iconColor: AppColors.onSecondaryContainer,
+                title: b.name.isNotEmpty ? b.name : 'Custom Drink',
+                time: DateFormat('hh:mm a').format(b.createdAt),
+                subtitle: '${b.origin} • ${b.roastLevel} Roast',
+                caffeine: '${b.caffeine}',
+              ));
+              itemWidgets.add(const SizedBox(height: 16));
+            }
+            
+            timelineWidgets.add(
+              Stack(
                 children: [
-                  _buildStatCard(
-                    context,
-                    title: "TODAY'S INTAKE",
-                    value: "120",
-                    unit: "mg",
-                    bgColor: AppColors.surfaceContainer,
+                  Positioned(
+                    left: 24,
+                    top: 0,
+                    bottom: 0,
+                    child: Container(
+                      width: 2,
+                      color: AppColors.outlineVariant.withValues(alpha: 0.3),
+                    ),
                   ),
-                  const SizedBox(width: 16),
-                  _buildStatCard(
-                    context,
-                    title: "AVG ROAST",
-                    value: "Medium",
-                    unit: "",
-                    bgColor: AppColors.surfaceContainerLow,
-                  ),
-                  const SizedBox(width: 16),
-                  _buildStatCard(
-                    context,
-                    title: "TOTAL CUPS",
-                    value: "42",
-                    unit: "",
-                    bgColor: AppColors.surfaceContainerLow,
-                  ),
+                  Column(children: itemWidgets),
                 ],
               ),
-            ),
-            const SizedBox(height: 40),
+            );
+            timelineWidgets.add(const SizedBox(height: 40));
+          }
 
-            // Timeline Section: Today
-            _buildTimelineHeader(context, 'Today', isHighlighted: true),
-            const SizedBox(height: 16),
-            Stack(
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Positioned(
-                  left: 24,
-                  top: 0,
-                  bottom: 0,
-                  child: Container(
-                    width: 2,
-                    color: AppColors.outlineVariant.withValues(alpha: 0.3),
+                // History Header & Stats Summary
+                Text(
+                  'Brew History',
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontSize: 28),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Your coffee journey, curated cup by cup.',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.onSurfaceVariant),
+                ),
+                const SizedBox(height: 24),
+
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  clipBehavior: Clip.none,
+                  child: Row(
+                    children: [
+                      _buildStatCard(
+                        context,
+                        title: "TODAY'S INTAKE",
+                        value: "$todayCaffeine",
+                        unit: "mg",
+                        bgColor: AppColors.surfaceContainer,
+                      ),
+                      const SizedBox(width: 16),
+                      _buildStatCard(
+                        context,
+                        title: "AVG ROAST",
+                        value: avgRoast,
+                        unit: "",
+                        bgColor: AppColors.surfaceContainerLow,
+                      ),
+                      const SizedBox(width: 16),
+                      _buildStatCard(
+                        context,
+                        title: "TOTAL CUPS",
+                        value: "$totalCups",
+                        unit: "",
+                        bgColor: AppColors.surfaceContainerLow,
+                      ),
+                    ],
                   ),
                 ),
-                Column(
+                const SizedBox(height: 40),
+
+                // Dynamic Timeline
+                if (brews.isEmpty)
+                   Center(
+                     child: Padding(
+                       padding: const EdgeInsets.all(32.0),
+                       child: Text('No history yet.', style: Theme.of(context).textTheme.bodyLarge),
+                     ),
+                   )
+                else
+                   ...timelineWidgets,
+
+                // Bento Style Insights
+                Text(
+                  'Weekly Ritual',
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.primary),
+                ),
+                const SizedBox(height: 16),
+                Row(
                   children: [
-                    _buildHistoryItem(
-                      context,
-                      icon: Icons.coffee,
-                      iconBgColor: AppColors.secondaryContainer,
-                      iconColor: AppColors.onSecondaryContainer,
-                      title: 'Double Espresso',
-                      time: '08:45 AM',
-                      subtitle: 'Ethiopia Sidamo • Medium Roast',
-                      caffeine: '64',
+                    Expanded(
+                      child: Container(
+                        height: 160,
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryContainer,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Icon(Icons.trending_up, color: AppColors.onPrimaryContainer, size: 32),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Most Drunk', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onPrimaryContainer.withValues(alpha: 0.8))),
+                                const SizedBox(height: 4),
+                                Text(mostDrunk, style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.onPrimary, fontSize: 20)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 16),
-                    _buildHistoryItem(
-                      context,
-                      icon: Icons.local_cafe,
-                      iconBgColor: AppColors.secondaryContainer,
-                      iconColor: AppColors.onSecondaryContainer,
-                      title: 'Oat Milk Latte',
-                      time: '11:30 AM',
-                      subtitle: 'Signature House Blend',
-                      caffeine: '56',
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Container(
+                        height: 160,
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: AppColors.secondaryContainer,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Icon(Icons.wb_sunny, color: AppColors.onSecondaryContainer, size: 32),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Peak Time', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onSecondaryContainer.withValues(alpha: 0.8))),
+                                const SizedBox(height: 4),
+                                Text(peakTime, style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.onSurface, fontSize: 20)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
+                const SizedBox(height: 32),
               ],
             ),
-            const SizedBox(height: 40),
-
-            // Timeline Section: Yesterday
-            _buildTimelineHeader(context, 'Yesterday', isHighlighted: false),
-            const SizedBox(height: 16),
-            Stack(
-              children: [
-                Positioned(
-                  left: 24,
-                  top: 0,
-                  bottom: 0,
-                  child: Container(
-                    width: 2,
-                    color: AppColors.outlineVariant.withValues(alpha: 0.3),
-                  ),
-                ),
-                Column(
-                  children: [
-                    _buildHistoryItem(
-                      context,
-                      icon: Icons.coffee_maker,
-                      iconBgColor: AppColors.surfaceContainerHigh,
-                      iconColor: AppColors.onSurfaceVariant,
-                      title: 'V60 Pour Over',
-                      time: '09:15 AM',
-                      subtitle: 'Colombia Gesha • Light Roast',
-                      caffeine: '85',
-                    ),
-                    const SizedBox(height: 16),
-                    _buildHistoryItem(
-                      context,
-                      icon: Icons.bolt,
-                      iconBgColor: AppColors.surfaceContainerHigh,
-                      iconColor: AppColors.onSurfaceVariant,
-                      title: 'Cortado',
-                      time: '03:45 PM',
-                      subtitle: 'Brazil Cerrado',
-                      caffeine: '64',
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 40),
-
-            // Bento Style Insights
-            Text(
-              'Weekly Ritual',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.primary),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 160,
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryContainer,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Icon(Icons.trending_up, color: AppColors.onPrimaryContainer, size: 32),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Most Drunk', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onPrimaryContainer.withValues(alpha: 0.8))),
-                            const SizedBox(height: 4),
-                            Text('Flat White', style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.onPrimary, fontSize: 20)),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Container(
-                    height: 160,
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: AppColors.secondaryContainer,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Icon(Icons.wb_sunny, color: AppColors.onSecondaryContainer, size: 32),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Peak Time', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onSecondaryContainer.withValues(alpha: 0.8))),
-                            const SizedBox(height: 4),
-                            Text('09:30 AM', style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.onSurface, fontSize: 20)),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 32),
-          ],
-        ),
+          );
+        }
       ),
     );
   }

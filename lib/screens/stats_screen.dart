@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
+import '../core/constants/app_images.dart';
 
 class StatsScreen extends StatelessWidget {
   const StatsScreen({super.key});
@@ -33,8 +34,7 @@ class StatsScreen extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(color: AppColors.outlineVariant, width: 1),
                 image: const DecorationImage(
-                  image: NetworkImage(
-                      'https://lh3.googleusercontent.com/aida-public/AB6AXuA2P1Uf0y3GD7gcZ4y-jicQXXKI08Gfnlrgypa5bjkgAOyoyQcK-kEyw1lvK5My3-oYo9I-OK_nTqhBHhBPT3Zwt6GhmLBNfaDhfIs1r4MKk9q-CTAIJ1MbMuh_Lx2xdcQho_aF2_PYb31OKi4P5br_g3Repwz7N9s6tjt79kpIpX7pWY87bH-tPvbVprHfe-gCOSqR_xcL1Z-cZRQSzXH77_DoolERYdGiMh2Qbe5JgvH_e5mxYT-ehqmzZ94GugDXcrYIzQ8sFjXF'),
+                  image: NetworkImage(AppImages.statsAvatar),
                   fit: BoxFit.cover,
                 ),
               ),

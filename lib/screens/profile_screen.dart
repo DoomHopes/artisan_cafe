@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
+import '../core/constants/app_images.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -41,8 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 shape: BoxShape.circle,
                 border: Border.all(color: AppColors.primaryFixedDim, width: 2),
                 image: const DecorationImage(
-                  image: NetworkImage(
-                      'https://lh3.googleusercontent.com/aida-public/AB6AXuAq_jLtTY0KMzlTcihRRPC6cRzsKBwBxDhMSZJLI6tlmlgdYXZodJB6VwfgTa-O21kyIXoUDVM7tUBiYW4P4DIw8wy7kQ3U_PcMy3Cj-R9DUa9NMegYFj6xE3lnZdNebXU4VW2PC2_jh_v0E7JQAQ98AFtEM1geNXHK4JSPGi-0aJMZ70Ovc3clrspNV-_XvoUfxyDtFkSTl7ISd4GerXALBhOY8eMoWnbwzuuMEEU0l-6ZapvEJ1bBfqyESKRjkHYalHFjjeR7a-ZR'),
+                  image: NetworkImage(AppImages.profileAvatarSmall),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -73,8 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ],
                         image: const DecorationImage(
-                          image: NetworkImage(
-                              'https://lh3.googleusercontent.com/aida-public/AB6AXuBDRai8WdE6sCcAMo8WPTlVLdFbmUzwIa0UoOHMtfeq8-L2Wn9ddKE8djAfgkKsFi-rTMMDgeTBIIJy3zhYGbYqah-9sEvcja088Rzy0VsrTFW5dF2wb666gBcajPLCKlLW5jLBe1qOrBAS73U2RBONd5KSU3s4TTWz7qEHprUXTL_pgCr0F8luvJqYNKY9dsGCZAqO3eh8OcvobELolenJrB-hn6hlgGjstrIi1GfGtGiPG-0mRN75Pz76FMdt8ID8wSm6lT9pzmyJ'),
+                          image: NetworkImage(AppImages.profileAvatarLarge),
                           fit: BoxFit.cover,
                         ),
                       ),

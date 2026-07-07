@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../core/theme/app_colors.dart';
+import '../core/constants/app_images.dart';
 import '../providers/add_brew_provider.dart';
 
 class ReviewBrewScreen extends ConsumerStatefulWidget {
@@ -202,8 +203,7 @@ class _ReviewBrewScreenState extends ConsumerState<ReviewBrewScreen> {
                         BoxShadow(color: AppColors.primaryContainer.withValues(alpha: 0.08), blurRadius: 24, offset: const Offset(0, 8)),
                       ],
                       image: const DecorationImage(
-                        image: NetworkImage(
-                            'https://lh3.googleusercontent.com/aida-public/AB6AXuAG_2I1f7KX0M50lkzKLd6D9Dsdss10qTYP-diymL7y0c5tHS44L1zHBmeU6EkJV0Ht97SL4wCY-DcUp-HFTxOMHJbfR4D5d1Pt4Epaj91CRQF5y05VTFTh-KuyqqhyuGGfHTAi5aJluAYzv18r03jXPnO9LcefwddlD1Zwd6Ioml9y9S96PmTYvjajxZrbV2PPW8WTM6LZAY_TZQO9pOGxVm32o8OcNKQ0agNELt_e77QPYJ7n_-PQJG3smGSMDgidOZt476nsBZRi'),
+                        image: NetworkImage(AppImages.reviewMap),
                         fit: BoxFit.cover,
                       ),
                     ),
