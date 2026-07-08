@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/user.dart';
 import 'user_repository.dart';
+import '../core/utils/logger.dart';
 
 class SqliteUserRepository implements UserRepository {
   static const String _tableName = 'users';
@@ -49,13 +50,19 @@ class SqliteUserRepository implements UserRepository {
 
   @override
   Future<void> createUser(User user) async {
-    final db = await database;
-    await db.insert(
-      _tableName,
-      _userToDbMap(user),
-      conflictAlgorithm: ConflictAlgorithm
-          .abort, // Assuming username is unique, we shouldn't replace on create
-    );
+    talker.debug('SqliteUserRepository: Creating user ${user.id}');
+    try {
+      final db = await database;
+      await db.insert(
+        _tableName,
+        _userToDbMap(user),
+        conflictAlgorithm: ConflictAlgorithm.abort,
+      );
+      talker.info('SqliteUserRepository: User ${user.id} created successfully');
+    } catch (e, st) {
+      talker.handle(e, st, 'SqliteUserRepository: Failed to create user');
+      rethrow;
+    }
   }
 
   @override
@@ -91,18 +98,32 @@ class SqliteUserRepository implements UserRepository {
 
   @override
   Future<void> updateUser(User user) async {
-    final db = await database;
-    await db.update(
-      _tableName,
-      _userToDbMap(user),
-      where: 'id = ?',
-      whereArgs: [user.id],
-    );
+    talker.debug('SqliteUserRepository: Updating user ${user.id}');
+    try {
+      final db = await database;
+      await db.update(
+        _tableName,
+        _userToDbMap(user),
+        where: 'id = ?',
+        whereArgs: [user.id],
+      );
+      talker.info('SqliteUserRepository: User ${user.id} updated');
+    } catch (e, st) {
+      talker.handle(e, st, 'SqliteUserRepository: Failed to update user');
+      rethrow;
+    }
   }
 
   @override
   Future<void> deleteUser(String id) async {
-    final db = await database;
-    await db.delete(_tableName, where: 'id = ?', whereArgs: [id]);
+    talker.debug('SqliteUserRepository: Deleting user $id');
+    try {
+      final db = await database;
+      await db.delete(_tableName, where: 'id = ?', whereArgs: [id]);
+      talker.info('SqliteUserRepository: User $id deleted');
+    } catch (e, st) {
+      talker.handle(e, st, 'SqliteUserRepository: Failed to delete user');
+      rethrow;
+    }
   }
 }

@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/brew.dart';
 import 'brew_repository.dart';
+import '../core/utils/logger.dart';
 
 class SqliteBrewRepository implements BrewRepository {
   static const String _tableName = 'brews';
@@ -57,48 +58,76 @@ class SqliteBrewRepository implements BrewRepository {
 
   @override
   Future<List<Brew>> getBrews() async {
-    final db = await database;
-    final List<Map<String, Object?>> maps = await db.query(
-      _tableName,
-      orderBy: 'createdAt DESC',
-    );
-
-    return maps.map((map) => _dbMapToBrew(map)).toList();
+    talker.debug('SqliteBrewRepository: Fetching all brews');
+    try {
+      final db = await database;
+      final List<Map<String, Object?>> maps = await db.query(
+        _tableName,
+        orderBy: 'createdAt DESC',
+      );
+      talker.info('SqliteBrewRepository: Fetched ${maps.length} brews');
+      return maps.map((map) => _dbMapToBrew(map)).toList();
+    } catch (e, st) {
+      talker.handle(e, st, 'SqliteBrewRepository: Failed to fetch brews');
+      rethrow;
+    }
   }
 
   @override
   Future<Brew?> getBrewById(String id) async {
-    final db = await database;
-    final maps = await db.query(
-      _tableName,
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    talker.debug('SqliteBrewRepository: Fetching brew $id');
+    try {
+      final db = await database;
+      final maps = await db.query(
+        _tableName,
+        where: 'id = ?',
+        whereArgs: [id],
+      );
 
-    if (maps.isNotEmpty) {
-      return _dbMapToBrew(maps.first);
-    } else {
-      return null;
+      if (maps.isNotEmpty) {
+        talker.info('SqliteBrewRepository: Brew $id found');
+        return _dbMapToBrew(maps.first);
+      } else {
+        talker.info('SqliteBrewRepository: Brew $id not found');
+        return null;
+      }
+    } catch (e, st) {
+      talker.handle(e, st, 'SqliteBrewRepository: Failed to fetch brew $id');
+      rethrow;
     }
   }
 
   @override
   Future<void> addBrew(Brew brew) async {
-    final db = await database;
-    await db.insert(
-      _tableName,
-      _brewToDbMap(brew),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    talker.debug('SqliteBrewRepository: Adding brew ${brew.id}');
+    try {
+      final db = await database;
+      await db.insert(
+        _tableName,
+        _brewToDbMap(brew),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      talker.info('SqliteBrewRepository: Brew ${brew.id} added successfully');
+    } catch (e, st) {
+      talker.handle(e, st, 'SqliteBrewRepository: Failed to add brew');
+      rethrow;
+    }
   }
 
   @override
   Future<void> deleteBrew(String id) async {
-    final db = await database;
-    await db.delete(
-      _tableName,
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    talker.debug('SqliteBrewRepository: Deleting brew $id');
+    try {
+      final db = await database;
+      await db.delete(
+        _tableName,
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      talker.info('SqliteBrewRepository: Brew $id deleted');
+    } catch (e, st) {
+      talker.handle(e, st, 'SqliteBrewRepository: Failed to delete brew');
+      rethrow;
+    }
   }
 }

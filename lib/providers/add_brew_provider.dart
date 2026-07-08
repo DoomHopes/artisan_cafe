@@ -5,6 +5,7 @@ import 'package:uuid/uuid.dart';
 import '../models/brew.dart';
 import 'repository_provider.dart';
 import 'brew_history_provider.dart';
+import '../core/utils/logger.dart';
 
 part 'add_brew_provider.freezed.dart';
 part 'add_brew_provider.g.dart';
@@ -99,7 +100,13 @@ class AddBrewWizard extends _$AddBrewWizard {
     );
 
     final repo = ref.read(brewRepositoryProvider);
-    await repo.addBrew(brew);
+    try {
+      await repo.addBrew(brew);
+      talker.info('AddBrewWizard: Brew logged successfully');
+    } catch (e, st) {
+      talker.handle(e, st, 'AddBrewWizard: Failed to log brew');
+      rethrow;
+    }
     
     // Invalidate state to start fresh next time
     ref.invalidateSelf();
