@@ -7,15 +7,17 @@ void main() {
   runApp(const ProviderScope(child: ArtisanCafeApp()));
 }
 
-class ArtisanCafeApp extends StatelessWidget {
+class ArtisanCafeApp extends ConsumerWidget {
   const ArtisanCafeApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(appRouterProvider);
+
     return MaterialApp.router(
       title: 'Artisan Cafe',
       theme: AppTheme.lightTheme,
-      routerConfig: appRouter,
+      routerConfig: router,
       debugShowCheckedModeBanner: false,
     );
   }

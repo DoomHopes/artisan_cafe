@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
-import '../core/constants/app_images.dart';
 
 class StatsScreen extends StatelessWidget {
   const StatsScreen({super.key});
@@ -24,23 +23,6 @@ class StatsScreen extends StatelessWidget {
             ),
           ],
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: AppColors.outlineVariant, width: 1),
-                image: const DecorationImage(
-                  image: NetworkImage(AppImages.statsAvatar),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          )
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
@@ -49,12 +31,16 @@ class StatsScreen extends StatelessWidget {
           children: [
             Text(
               'Weekly Insights',
-              style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontSize: 28),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineLarge?.copyWith(fontSize: 28),
             ),
             const SizedBox(height: 4),
             Text(
               'Your caffeine ritual, quantified.',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.onSurfaceVariant),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppColors.onSurfaceVariant,
+              ),
             ),
             const SizedBox(height: 24),
 
@@ -70,7 +56,9 @@ class StatsScreen extends StatelessWidget {
                       border: Border.all(color: AppColors.outlineVariant),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primaryContainer.withValues(alpha: 0.05),
+                          color: AppColors.primaryContainer.withValues(
+                            alpha: 0.05,
+                          ),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
                         ),
@@ -79,15 +67,30 @@ class StatsScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Weekly Average', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onSurfaceVariant, fontSize: 14)),
+                        Text(
+                          'Weekly Average',
+                          style: Theme.of(context).textTheme.labelMedium
+                              ?.copyWith(
+                                color: AppColors.onSurfaceVariant,
+                                fontSize: 14,
+                              ),
+                        ),
                         const SizedBox(height: 8),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.baseline,
                           textBaseline: TextBaseline.alphabetic,
                           children: [
-                            Text('2.4', style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.primary)),
+                            Text(
+                              '2.4',
+                              style: Theme.of(context).textTheme.headlineMedium
+                                  ?.copyWith(color: AppColors.primary),
+                            ),
                             const SizedBox(width: 4),
-                            Text('cups/day', style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.onSurfaceVariant)),
+                            Text(
+                              'cups/day',
+                              style: Theme.of(context).textTheme.labelSmall
+                                  ?.copyWith(color: AppColors.onSurfaceVariant),
+                            ),
                           ],
                         ),
                       ],
@@ -103,7 +106,9 @@ class StatsScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primaryContainer.withValues(alpha: 0.05),
+                          color: AppColors.primaryContainer.withValues(
+                            alpha: 0.05,
+                          ),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
                         ),
@@ -112,15 +117,32 @@ class StatsScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Total Caffeine', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onPrimaryContainer, fontSize: 14)),
+                        Text(
+                          'Total Caffeine',
+                          style: Theme.of(context).textTheme.labelMedium
+                              ?.copyWith(
+                                color: AppColors.onPrimaryContainer,
+                                fontSize: 14,
+                              ),
+                        ),
                         const SizedBox(height: 8),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.baseline,
                           textBaseline: TextBaseline.alphabetic,
                           children: [
-                            Text('1,420', style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.onPrimary)),
+                            Text(
+                              '1,420',
+                              style: Theme.of(context).textTheme.headlineMedium
+                                  ?.copyWith(color: AppColors.onPrimary),
+                            ),
                             const SizedBox(width: 4),
-                            Text('mg', style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.onPrimaryContainer)),
+                            Text(
+                              'mg',
+                              style: Theme.of(context).textTheme.labelSmall
+                                  ?.copyWith(
+                                    color: AppColors.onPrimaryContainer,
+                                  ),
+                            ),
                           ],
                         ),
                       ],
@@ -151,21 +173,46 @@ class StatsScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Consumption Trends', style: Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: 14)),
+                      Text(
+                        'Consumption Trends',
+                        style: Theme.of(
+                          context,
+                        ).textTheme.labelMedium?.copyWith(fontSize: 14),
+                      ),
                       Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 4,
+                            ),
                             decoration: BoxDecoration(
                               color: AppColors.secondaryContainer,
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            child: const Text('Week', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.onSecondaryContainer)),
+                            child: const Text(
+                              'Week',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.onSecondaryContainer,
+                              ),
+                            ),
                           ),
                           const SizedBox(width: 8),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                            child: const Text('Month', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.onSurfaceVariant)),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 4,
+                            ),
+                            child: const Text(
+                              'Month',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.onSurfaceVariant,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -179,7 +226,13 @@ class StatsScreen extends StatelessWidget {
                         // Grid lines
                         Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: List.generate(4, (index) => const Divider(color: AppColors.outline, thickness: 0.2)),
+                          children: List.generate(
+                            4,
+                            (index) => const Divider(
+                              color: AppColors.outline,
+                              thickness: 0.2,
+                            ),
+                          ),
                         ),
                         // Bars
                         Row(
@@ -204,13 +257,33 @@ class StatsScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Bean Preferences
-            Text('Bean Preferences', style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontSize: 24)),
+            Text(
+              'Bean Preferences',
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(fontSize: 24),
+            ),
             const SizedBox(height: 12),
-            _buildPreferenceItem(Icons.coffee_maker, 'Ethiopian Yirgacheffe', 0.42, true),
+            _buildPreferenceItem(
+              Icons.coffee_maker,
+              'Ethiopian Yirgacheffe',
+              0.42,
+              true,
+            ),
             const SizedBox(height: 12),
-            _buildPreferenceItem(Icons.water_drop, 'Cold Brew (House)', 0.28, false),
+            _buildPreferenceItem(
+              Icons.water_drop,
+              'Cold Brew (House)',
+              0.28,
+              false,
+            ),
             const SizedBox(height: 12),
-            _buildPreferenceItem(Icons.local_cafe, 'Oat Milk Latte', 0.15, false),
+            _buildPreferenceItem(
+              Icons.local_cafe,
+              'Oat Milk Latte',
+              0.15,
+              false,
+            ),
             const SizedBox(height: 24),
 
             // Ambient Brewing Tip
@@ -226,24 +299,45 @@ class StatsScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.lightbulb_outline, size: 20, color: Color(0xFF872000)),
+                      const Icon(
+                        Icons.lightbulb_outline,
+                        size: 20,
+                        color: Color(0xFF872000),
+                      ),
                       const SizedBox(width: 8),
-                      Text('Brewing Tip', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: const Color(0xFF872000))),
+                      Text(
+                        'Brewing Tip',
+                        style: Theme.of(context).textTheme.labelMedium
+                            ?.copyWith(color: const Color(0xFF872000)),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Text('Optimize your extraction', style: Theme.of(context).textTheme.headlineMedium),
+                  Text(
+                    'Optimize your extraction',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
                   const SizedBox(height: 8),
                   Text(
                     'Based on your frequency, you might enjoy a coarser grind for your morning ritual to reduce acidity.',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.onSurfaceVariant),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.onSurfaceVariant,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      Text('Learn how', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.primary)),
+                      Text(
+                        'Learn how',
+                        style: Theme.of(context).textTheme.labelMedium
+                            ?.copyWith(color: AppColors.primary),
+                      ),
                       const SizedBox(width: 4),
-                      const Icon(Icons.arrow_forward, size: 18, color: AppColors.primary),
+                      const Icon(
+                        Icons.arrow_forward,
+                        size: 18,
+                        color: AppColors.primary,
+                      ),
                     ],
                   ),
                 ],
@@ -263,7 +357,9 @@ class StatsScreen extends StatelessWidget {
           width: 32,
           height: 160 * percent,
           decoration: BoxDecoration(
-            color: isHighlight ? AppColors.secondaryContainer : AppColors.surfaceContainerHigh,
+            color: isHighlight
+                ? AppColors.secondaryContainer
+                : AppColors.surfaceContainerHigh,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
           ),
           child: Align(
@@ -272,19 +368,34 @@ class StatsScreen extends StatelessWidget {
               width: double.infinity,
               height: 160 * percent,
               decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: isHighlight ? 0.3 : 0.0),
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+                color: AppColors.primary.withValues(
+                  alpha: isHighlight ? 0.3 : 0.0,
+                ),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(8),
+                ),
               ),
             ),
           ),
         ),
         const SizedBox(height: 8),
-        Text(day, style: const TextStyle(fontSize: 12, color: AppColors.onSurfaceVariant)),
+        Text(
+          day,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.onSurfaceVariant,
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildPreferenceItem(IconData icon, String title, double percent, bool isPrimary) {
+  Widget _buildPreferenceItem(
+    IconData icon,
+    String title,
+    double percent,
+    bool isPrimary,
+  ) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -298,10 +409,15 @@ class StatsScreen extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: isPrimary ? AppColors.secondaryContainer : AppColors.surfaceContainerHigh,
+              color: isPrimary
+                  ? AppColors.secondaryContainer
+                  : AppColors.surfaceContainerHigh,
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: isPrimary ? AppColors.primary : AppColors.onSurfaceVariant),
+            child: Icon(
+              icon,
+              color: isPrimary ? AppColors.primary : AppColors.onSurfaceVariant,
+            ),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -311,8 +427,21 @@ class StatsScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.onSurface)),
-                    Text('${(percent * 100).toInt()}%', style: const TextStyle(fontSize: 12, color: AppColors.onSurfaceVariant)),
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.onSurface,
+                      ),
+                    ),
+                    Text(
+                      '${(percent * 100).toInt()}%',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.onSurfaceVariant,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 8),
