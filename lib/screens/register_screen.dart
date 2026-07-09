@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:artisan_cafe/core/extensions/context_extensions.dart';
 import '../core/theme/app_colors.dart';
 import '../providers/user_provider.dart';
 
@@ -15,7 +16,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _loginController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  
+
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _isLoading = false;
@@ -29,21 +30,22 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Future<void> _handleRegister() async {
+    final l10n = context.l10n;
     final username = _loginController.text.trim();
     final password = _passwordController.text;
     final confirmPassword = _confirmPasswordController.text;
 
     if (username.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.fillAllFields)));
       return;
     }
 
     if (password != confirmPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Passwords do not match')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.passwordsDoNotMatch)));
       return;
     }
 
@@ -62,9 +64,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         if (message.startsWith('Exception: ')) {
           message = message.substring('Exception: '.length);
         }
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
       }
     } finally {
       if (mounted) {
@@ -78,6 +80,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l10n = context.l10n;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -85,7 +88,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         child: SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height -
+              minHeight:
+                  MediaQuery.of(context).size.height -
                   MediaQuery.of(context).padding.top -
                   MediaQuery.of(context).padding.bottom,
             ),
@@ -94,21 +98,27 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 children: [
                   // Top App Bar
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 48,
+                      horizontal: 24,
+                    ),
                     child: Center(
                       child: Text(
-                        'Artisan Cafe',
+                        l10n.appName,
                         style: textTheme.headlineMedium?.copyWith(
                           color: AppColors.primary,
                         ),
                       ),
                     ),
                   ),
-                  
+
                   // Main Content Canvas
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 40,
+                      ),
                       child: Center(
                         child: ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 480),
@@ -117,14 +127,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             children: [
                               // Header
                               Text(
-                                'Start Your Ritual',
+                                l10n.startRitual,
                                 style: textTheme.displayMedium?.copyWith(
                                   color: AppColors.primary,
                                 ),
                               ),
                               const SizedBox(height: 16),
                               Text(
-                                'Set the foundation for your brewing journey. Your data is your own.',
+                                l10n.setFoundation,
                                 style: textTheme.bodyLarge?.copyWith(
                                   color: AppColors.secondary,
                                 ),
@@ -142,24 +152,26 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: AppColors.primaryContainer.withValues(alpha: 0.08),
+                                      color: AppColors.primaryContainer
+                                          .withValues(alpha: 0.08),
                                       blurRadius: 20,
                                       offset: const Offset(0, 4),
                                     ),
                                   ],
                                 ),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: [
                                     _buildUnderlinedTextField(
-                                      label: 'LOGIN',
-                                      hint: 'Enter your username',
+                                      label: l10n.loginLabel,
+                                      hint: l10n.enterUsernameHint,
                                       controller: _loginController,
                                       textTheme: textTheme,
                                     ),
                                     const SizedBox(height: 32),
                                     _buildUnderlinedTextField(
-                                      label: 'PASSWORD',
+                                      label: l10n.passwordLabel,
                                       hint: '••••••••',
                                       controller: _passwordController,
                                       isPassword: true,
@@ -173,20 +185,21 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                     ),
                                     const SizedBox(height: 32),
                                     _buildUnderlinedTextField(
-                                      label: 'CONFIRM PASSWORD',
+                                      label: l10n.confirmPasswordLabel,
                                       hint: '••••••••',
                                       controller: _confirmPasswordController,
                                       isPassword: true,
                                       obscureText: _obscureConfirmPassword,
                                       onToggleVisibility: () {
                                         setState(() {
-                                          _obscureConfirmPassword = !_obscureConfirmPassword;
+                                          _obscureConfirmPassword =
+                                              !_obscureConfirmPassword;
                                         });
                                       },
                                       textTheme: textTheme,
                                     ),
                                     const SizedBox(height: 32),
-                                    
+
                                     // Privacy Note
                                     Container(
                                       padding: const EdgeInsets.all(24),
@@ -195,7 +208,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           const Icon(
                                             Icons.lock_outline,
@@ -205,11 +219,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                           const SizedBox(width: 12),
                                           Expanded(
                                             child: Text(
-                                              'Everything stays on your device. We value your focus and privacy; no accounts or cloud sync required.',
-                                              style: textTheme.bodyMedium?.copyWith(
-                                                color: AppColors.secondary,
-                                                height: 1.6,
-                                              ),
+                                              l10n.privacyNote,
+                                              style: textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                    color: AppColors.secondary,
+                                                    height: 1.6,
+                                                  ),
                                             ),
                                           ),
                                         ],
@@ -219,17 +234,24 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
                                     // Action
                                     ElevatedButton(
-                                      onPressed: _isLoading ? null : _handleRegister,
+                                      onPressed: _isLoading
+                                          ? null
+                                          : _handleRegister,
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: AppColors.primary,
                                         foregroundColor: AppColors.onPrimary,
-                                        padding: const EdgeInsets.symmetric(vertical: 20),
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 20,
+                                        ),
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(32),
+                                          borderRadius: BorderRadius.circular(
+                                            32,
+                                          ),
                                         ),
                                       ),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           if (_isLoading) ...[
                                             const SizedBox(
@@ -237,27 +259,35 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                               height: 20,
                                               child: CircularProgressIndicator(
                                                 strokeWidth: 2,
-                                                valueColor: AlwaysStoppedAnimation<Color>(AppColors.onPrimary),
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                      Color
+                                                    >(AppColors.onPrimary),
                                               ),
                                             ),
                                             const SizedBox(width: 12),
                                             Text(
-                                              'Setting up...',
-                                              style: textTheme.bodyLarge?.copyWith(
-                                                color: AppColors.onPrimary,
-                                                fontWeight: FontWeight.w600,
-                                              ),
+                                              l10n.settingUp,
+                                              style: textTheme.bodyLarge
+                                                  ?.copyWith(
+                                                    color: AppColors.onPrimary,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                             ),
                                           ] else ...[
                                             Text(
-                                              'Create Account',
-                                              style: textTheme.bodyLarge?.copyWith(
-                                                color: AppColors.onPrimary,
-                                                fontWeight: FontWeight.w600,
-                                              ),
+                                              l10n.createAccount,
+                                              style: textTheme.bodyLarge
+                                                  ?.copyWith(
+                                                    color: AppColors.onPrimary,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                             ),
                                             const SizedBox(width: 12),
-                                            const Icon(Icons.arrow_forward, size: 20),
+                                            const Icon(
+                                              Icons.arrow_forward,
+                                              size: 20,
+                                            ),
                                           ],
                                         ],
                                       ),
@@ -272,7 +302,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'Already have an account?',
+                                    l10n.alreadyHaveAccount,
                                     style: textTheme.bodyMedium?.copyWith(
                                       color: AppColors.secondary,
                                     ),
@@ -282,7 +312,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                       context.push('/login');
                                     },
                                     child: Text(
-                                      'Login',
+                                      l10n.loginLink,
                                       style: textTheme.bodyMedium?.copyWith(
                                         color: AppColors.primary,
                                         fontWeight: FontWeight.w600,
@@ -300,7 +330,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
                   // Footer
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 24,
+                      horizontal: 24,
+                    ),
                     decoration: BoxDecoration(
                       border: Border(
                         top: BorderSide(color: AppColors.secondaryContainer),
@@ -309,7 +342,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     child: Column(
                       children: [
                         Text(
-                          '© 2024 Ethos Brewing Rituals',
+                          l10n.copyrightText,
                           style: textTheme.bodyMedium?.copyWith(
                             color: AppColors.secondary,
                           ),
@@ -318,11 +351,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _buildFooterLink('Privacy', textTheme),
+                            _buildFooterLink(l10n.privacyLink, textTheme),
                             const SizedBox(width: 24),
-                            _buildFooterLink('Terms', textTheme),
+                            _buildFooterLink(l10n.termsLink, textTheme),
                             const SizedBox(width: 24),
-                            _buildFooterLink('Support', textTheme),
+                            _buildFooterLink(l10n.supportLink, textTheme),
                           ],
                         ),
                       ],
@@ -340,9 +373,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Widget _buildFooterLink(String text, TextTheme textTheme) {
     return Text(
       text,
-      style: textTheme.bodyMedium?.copyWith(
-        color: AppColors.secondary,
-      ),
+      style: textTheme.bodyMedium?.copyWith(color: AppColors.secondary),
     );
   }
 
@@ -368,14 +399,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         TextField(
           controller: controller,
           obscureText: isPassword && obscureText,
-          style: textTheme.bodyLarge?.copyWith(
-            color: AppColors.onSurface,
-          ),
+          style: textTheme.bodyLarge?.copyWith(color: AppColors.onSurface),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: textTheme.bodyLarge?.copyWith(
-              color: AppColors.outline,
-            ),
+            hintStyle: textTheme.bodyLarge?.copyWith(color: AppColors.outline),
             contentPadding: const EdgeInsets.symmetric(vertical: 12),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.outlineVariant),

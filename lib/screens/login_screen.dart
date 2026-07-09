@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:artisan_cafe/core/extensions/context_extensions.dart';
 import '../core/theme/app_colors.dart';
 import '../providers/user_provider.dart';
 
@@ -28,9 +29,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final password = _passwordController.text;
 
     if (username.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter username and password')),
-      );
+      final l10n = context.l10n;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.enterCredentials)));
       return;
     }
 
@@ -45,9 +47,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         if (message.startsWith('Exception: ')) {
           message = message.substring('Exception: '.length);
         }
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
       }
     }
   }
@@ -55,6 +57,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l10n = context.l10n;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -78,7 +81,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        'Artisan Cafe',
+                        l10n.appName,
                         style: textTheme.headlineMedium?.copyWith(
                           color: AppColors.primary,
                         ),
@@ -117,14 +120,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                               // Headlines
                               Text(
-                                'Welcome Back',
+                                l10n.welcomeBack,
                                 style: textTheme.displaySmall?.copyWith(
                                   color: AppColors.primary,
                                 ),
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                'Ready for your next brewing ritual?',
+                                l10n.readyForBrewing,
                                 style: textTheme.bodyLarge?.copyWith(
                                   color: AppColors.secondary,
                                 ),
@@ -155,14 +158,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       CrossAxisAlignment.stretch,
                                   children: [
                                     _buildTextField(
-                                      label: 'LOGIN',
-                                      hint: 'Username or Email',
+                                      label: l10n.loginLabel,
+                                      hint: l10n.usernameHint,
                                       controller: _usernameController,
                                       textTheme: textTheme,
                                     ),
                                     const SizedBox(height: 24),
                                     _buildTextField(
-                                      label: 'PASSWORD',
+                                      label: l10n.passwordLabel,
                                       hint: '••••••••',
                                       controller: _passwordController,
                                       isPassword: true,
@@ -188,7 +191,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                         ),
                                         textStyle: textTheme.labelLarge,
                                       ),
-                                      child: const Text('LOGIN'),
+                                      child: Text(l10n.loginLabel),
                                     ),
                                   ],
                                 ),
@@ -202,7 +205,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   Icons.cloud_download_outlined,
                                   size: 16,
                                 ),
-                                label: const Text('RESTORE FROM BACKUP'),
+                                label: Text(l10n.restoreBackup),
                                 style: TextButton.styleFrom(
                                   foregroundColor: AppColors.secondary,
                                   textStyle: textTheme.labelMedium?.copyWith(
@@ -221,7 +224,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                    'OR',
+                                    l10n.orText,
                                     style: textTheme.labelSmall?.copyWith(
                                       color: AppColors.outlineVariant,
                                     ),
@@ -243,7 +246,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   foregroundColor: AppColors.secondary,
                                 ),
                                 child: Text(
-                                  'Create a new profile',
+                                  l10n.createProfile,
                                   style: textTheme.bodyMedium?.copyWith(
                                     decoration: TextDecoration.underline,
                                   ),
@@ -270,7 +273,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     child: Column(
                       children: [
                         Text(
-                          '© 2024 Ethos Brewing Rituals',
+                          l10n.copyrightText,
                           style: textTheme.bodyMedium?.copyWith(
                             color: AppColors.primary,
                           ),
@@ -279,11 +282,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _buildFooterLink('Privacy', textTheme),
+                            _buildFooterLink(l10n.privacyLink, textTheme),
                             const SizedBox(width: 24),
-                            _buildFooterLink('Terms', textTheme),
+                            _buildFooterLink(l10n.termsLink, textTheme),
                             const SizedBox(width: 24),
-                            _buildFooterLink('Support', textTheme),
+                            _buildFooterLink(l10n.supportLink, textTheme),
                           ],
                         ),
                       ],

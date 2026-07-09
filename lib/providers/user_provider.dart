@@ -6,6 +6,7 @@ import '../models/user.dart';
 import '../repositories/user_repository.dart';
 import '../repositories/sqlite_user_repository.dart';
 import '../core/utils/logger.dart';
+import 'locale_provider.dart';
 
 part 'user_provider.g.dart';
 
@@ -44,6 +45,10 @@ class CurrentUser extends _$CurrentUser {
     if (user != null) {
       await storage.write(key: _userIdKey, value: user.id);
       state = AsyncData(user);
+      
+      // Sync language
+      await ref.read(localeProvider.notifier).syncWithUser(user.languageCode);
+
       talker.info('CurrentUser: Login successful for $username');
     } else {
       talker.warning('CurrentUser: Login failed for $username');
@@ -55,7 +60,8 @@ class CurrentUser extends _$CurrentUser {
     talker.debug('CurrentUser: Attempting registration for $username');
     final repo = ref.read(userRepositoryProvider);
     final storage = ref.read(secureStorageProvider);
-    
+    // Get current device language to set for the new user
+    final currentLocale = ref.read(localeProvider).value?.languageCode ?? 'en';
     final newUser = User(
       id: const Uuid().v4(),
       username: username,
@@ -64,6 +70,7 @@ class CurrentUser extends _$CurrentUser {
       createdAt: DateTime.now(),
       dailyGoal: 3,
       remindersEnabled: true,
+      languageCode: currentLocale,
     );
     
     try {
@@ -109,6 +116,14 @@ class CurrentUser extends _$CurrentUser {
     if (state.value == null) return;
     
     final updatedUser = state.value!.copyWith(remindersEnabled: enabled);
+    await ref.read(userRepositoryProvider).updateUser(updatedUser);
+    state = AsyncData(updatedUser);
+  }
+
+  Future<void> updateLanguage(String languageCode) async {
+    if (state.value == null) return;
+    
+    final updatedUser = state.value!.copyWith(languageCode: languageCode);
     await ref.read(userRepositoryProvider).updateUser(updatedUser);
     state = AsyncData(updatedUser);
   }

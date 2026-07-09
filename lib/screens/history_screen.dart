@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:artisan_cafe/core/extensions/context_extensions.dart';
 import '../core/theme/app_colors.dart';
 import '../providers/brew_history_provider.dart';
 import '../models/brew.dart';
@@ -11,6 +12,7 @@ class HistoryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final brewsAsync = ref.watch(brewHistoryProvider);
+    final l10n = context.l10n;
 
     return Scaffold(
       backgroundColor: AppColors.surface,
@@ -21,7 +23,7 @@ class HistoryScreen extends ConsumerWidget {
             const Icon(Icons.coffee, color: AppColors.primary, size: 24),
             const SizedBox(width: 12),
             Text(
-              'Artisan Cafe',
+              l10n.appName,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 color: AppColors.primary,
                 fontSize: 24,
@@ -63,7 +65,7 @@ class HistoryScreen extends ConsumerWidget {
 
             for (var b in brews) {
               roastCounts[b.roastLevel] = (roastCounts[b.roastLevel] ?? 0) + 1;
-              final name = b.name.isNotEmpty ? b.name : 'Custom Drink';
+              final name = b.name.isNotEmpty ? b.name : l10n.customDrink;
               nameCounts[name] = (nameCounts[name] ?? 0) + 1;
               final hour = DateFormat('hh:00 a').format(b.createdAt);
               hourCounts[hour] = (hourCounts[hour] ?? 0) + 1;
@@ -98,10 +100,10 @@ class HistoryScreen extends ConsumerWidget {
             bool isHighlighted = false;
 
             if (difference == 0) {
-              headerText = "Today";
+              headerText = l10n.today;
               isHighlighted = true;
             } else if (difference == 1) {
-              headerText = "Yesterday";
+              headerText = l10n.yesterday;
             }
 
             timelineWidgets.add(
@@ -121,9 +123,9 @@ class HistoryScreen extends ConsumerWidget {
                   icon: Icons.coffee,
                   iconBgColor: AppColors.secondaryContainer,
                   iconColor: AppColors.onSecondaryContainer,
-                  title: b.name.isNotEmpty ? b.name : 'Custom Drink',
+                  title: b.name.isNotEmpty ? b.name : l10n.customDrink,
                   time: DateFormat('hh:mm a').format(b.createdAt),
-                  subtitle: '${b.origin} • ${b.roastLevel} Roast',
+                  subtitle: l10n.roastSubtitle(b.origin, b.roastLevel),
                   caffeine: '${b.caffeine}',
                 ),
               );
@@ -156,14 +158,14 @@ class HistoryScreen extends ConsumerWidget {
               children: [
                 // History Header & Stats Summary
                 Text(
-                  'Brew History',
+                  l10n.brewHistory,
                   style: Theme.of(
                     context,
                   ).textTheme.headlineLarge?.copyWith(fontSize: 28),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Your coffee journey, curated cup by cup.',
+                  l10n.brewHistorySubtitle,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.onSurfaceVariant,
                   ),
@@ -177,15 +179,15 @@ class HistoryScreen extends ConsumerWidget {
                     children: [
                       _buildStatCard(
                         context,
-                        title: "TODAY'S INTAKE",
+                        title: l10n.todaysIntake,
                         value: "$todayCaffeine",
-                        unit: "mg",
+                        unit: l10n.mgLabel,
                         bgColor: AppColors.surfaceContainer,
                       ),
                       const SizedBox(width: 16),
                       _buildStatCard(
                         context,
-                        title: "AVG ROAST",
+                        title: l10n.avgRoast,
                         value: avgRoast,
                         unit: "",
                         bgColor: AppColors.surfaceContainerLow,
@@ -193,7 +195,7 @@ class HistoryScreen extends ConsumerWidget {
                       const SizedBox(width: 16),
                       _buildStatCard(
                         context,
-                        title: "TOTAL CUPS",
+                        title: l10n.totalCups,
                         value: "$totalCups",
                         unit: "",
                         bgColor: AppColors.surfaceContainerLow,
@@ -209,7 +211,7 @@ class HistoryScreen extends ConsumerWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(32.0),
                       child: Text(
-                        'No history yet.',
+                        l10n.noHistoryYet,
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
@@ -219,7 +221,7 @@ class HistoryScreen extends ConsumerWidget {
 
                 // Bento Style Insights
                 Text(
-                  'Weekly Ritual',
+                  l10n.weeklyRitual,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     color: AppColors.primary,
                   ),
@@ -248,7 +250,7 @@ class HistoryScreen extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Most Drunk',
+                                  l10n.mostDrunkTitle,
                                   style: Theme.of(context).textTheme.labelMedium
                                       ?.copyWith(
                                         color: AppColors.onPrimaryContainer
@@ -294,7 +296,7 @@ class HistoryScreen extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Peak Time',
+                                  l10n.peakTimeTitle,
                                   style: Theme.of(context).textTheme.labelMedium
                                       ?.copyWith(
                                         color: AppColors.onSecondaryContainer

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$User {
 
- String get id; String get username; String get password; String get name; DateTime get createdAt; int get dailyGoal; bool get remindersEnabled;
+ String get id; String get username; String get password; String get name; DateTime get createdAt; int get dailyGoal; bool get remindersEnabled; String get languageCode;
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserCopyWith<User> get copyWith => _$UserCopyWithImpl<User>(this as User, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password)&&(identical(other.name, name) || other.name == name)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.dailyGoal, dailyGoal) || other.dailyGoal == dailyGoal)&&(identical(other.remindersEnabled, remindersEnabled) || other.remindersEnabled == remindersEnabled));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password)&&(identical(other.name, name) || other.name == name)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.dailyGoal, dailyGoal) || other.dailyGoal == dailyGoal)&&(identical(other.remindersEnabled, remindersEnabled) || other.remindersEnabled == remindersEnabled)&&(identical(other.languageCode, languageCode) || other.languageCode == languageCode));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,username,password,name,createdAt,dailyGoal,remindersEnabled);
+int get hashCode => Object.hash(runtimeType,id,username,password,name,createdAt,dailyGoal,remindersEnabled,languageCode);
 
 @override
 String toString() {
-  return 'User(id: $id, username: $username, password: $password, name: $name, createdAt: $createdAt, dailyGoal: $dailyGoal, remindersEnabled: $remindersEnabled)';
+  return 'User(id: $id, username: $username, password: $password, name: $name, createdAt: $createdAt, dailyGoal: $dailyGoal, remindersEnabled: $remindersEnabled, languageCode: $languageCode)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserCopyWith<$Res>  {
   factory $UserCopyWith(User value, $Res Function(User) _then) = _$UserCopyWithImpl;
 @useResult
 $Res call({
- String id, String username, String password, String name, DateTime createdAt, int dailyGoal, bool remindersEnabled
+ String id, String username, String password, String name, DateTime createdAt, int dailyGoal, bool remindersEnabled, String languageCode
 });
 
 
@@ -65,7 +65,7 @@ class _$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = null,Object? password = null,Object? name = null,Object? createdAt = null,Object? dailyGoal = null,Object? remindersEnabled = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = null,Object? password = null,Object? name = null,Object? createdAt = null,Object? dailyGoal = null,Object? remindersEnabled = null,Object? languageCode = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
@@ -74,7 +74,8 @@ as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,dailyGoal: null == dailyGoal ? _self.dailyGoal : dailyGoal // ignore: cast_nullable_to_non_nullable
 as int,remindersEnabled: null == remindersEnabled ? _self.remindersEnabled : remindersEnabled // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,languageCode: null == languageCode ? _self.languageCode : languageCode // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -159,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String username,  String password,  String name,  DateTime createdAt,  int dailyGoal,  bool remindersEnabled)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String username,  String password,  String name,  DateTime createdAt,  int dailyGoal,  bool remindersEnabled,  String languageCode)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.id,_that.username,_that.password,_that.name,_that.createdAt,_that.dailyGoal,_that.remindersEnabled);case _:
+return $default(_that.id,_that.username,_that.password,_that.name,_that.createdAt,_that.dailyGoal,_that.remindersEnabled,_that.languageCode);case _:
   return orElse();
 
 }
@@ -180,10 +181,10 @@ return $default(_that.id,_that.username,_that.password,_that.name,_that.createdA
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String username,  String password,  String name,  DateTime createdAt,  int dailyGoal,  bool remindersEnabled)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String username,  String password,  String name,  DateTime createdAt,  int dailyGoal,  bool remindersEnabled,  String languageCode)  $default,) {final _that = this;
 switch (_that) {
 case _User():
-return $default(_that.id,_that.username,_that.password,_that.name,_that.createdAt,_that.dailyGoal,_that.remindersEnabled);case _:
+return $default(_that.id,_that.username,_that.password,_that.name,_that.createdAt,_that.dailyGoal,_that.remindersEnabled,_that.languageCode);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +201,10 @@ return $default(_that.id,_that.username,_that.password,_that.name,_that.createdA
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String username,  String password,  String name,  DateTime createdAt,  int dailyGoal,  bool remindersEnabled)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String username,  String password,  String name,  DateTime createdAt,  int dailyGoal,  bool remindersEnabled,  String languageCode)?  $default,) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.id,_that.username,_that.password,_that.name,_that.createdAt,_that.dailyGoal,_that.remindersEnabled);case _:
+return $default(_that.id,_that.username,_that.password,_that.name,_that.createdAt,_that.dailyGoal,_that.remindersEnabled,_that.languageCode);case _:
   return null;
 
 }
@@ -215,7 +216,7 @@ return $default(_that.id,_that.username,_that.password,_that.name,_that.createdA
 @JsonSerializable()
 
 class _User implements User {
-  const _User({required this.id, required this.username, required this.password, required this.name, required this.createdAt, this.dailyGoal = 3, this.remindersEnabled = true});
+  const _User({required this.id, required this.username, required this.password, required this.name, required this.createdAt, this.dailyGoal = 3, this.remindersEnabled = true, this.languageCode = 'en'});
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
 @override final  String id;
@@ -225,6 +226,7 @@ class _User implements User {
 @override final  DateTime createdAt;
 @override@JsonKey() final  int dailyGoal;
 @override@JsonKey() final  bool remindersEnabled;
+@override@JsonKey() final  String languageCode;
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
@@ -239,16 +241,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password)&&(identical(other.name, name) || other.name == name)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.dailyGoal, dailyGoal) || other.dailyGoal == dailyGoal)&&(identical(other.remindersEnabled, remindersEnabled) || other.remindersEnabled == remindersEnabled));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password)&&(identical(other.name, name) || other.name == name)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.dailyGoal, dailyGoal) || other.dailyGoal == dailyGoal)&&(identical(other.remindersEnabled, remindersEnabled) || other.remindersEnabled == remindersEnabled)&&(identical(other.languageCode, languageCode) || other.languageCode == languageCode));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,username,password,name,createdAt,dailyGoal,remindersEnabled);
+int get hashCode => Object.hash(runtimeType,id,username,password,name,createdAt,dailyGoal,remindersEnabled,languageCode);
 
 @override
 String toString() {
-  return 'User(id: $id, username: $username, password: $password, name: $name, createdAt: $createdAt, dailyGoal: $dailyGoal, remindersEnabled: $remindersEnabled)';
+  return 'User(id: $id, username: $username, password: $password, name: $name, createdAt: $createdAt, dailyGoal: $dailyGoal, remindersEnabled: $remindersEnabled, languageCode: $languageCode)';
 }
 
 
@@ -259,7 +261,7 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$UserCopyWith(_User value, $Res Function(_User) _then) = __$UserCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String username, String password, String name, DateTime createdAt, int dailyGoal, bool remindersEnabled
+ String id, String username, String password, String name, DateTime createdAt, int dailyGoal, bool remindersEnabled, String languageCode
 });
 
 
@@ -276,7 +278,7 @@ class __$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? username = null,Object? password = null,Object? name = null,Object? createdAt = null,Object? dailyGoal = null,Object? remindersEnabled = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? username = null,Object? password = null,Object? name = null,Object? createdAt = null,Object? dailyGoal = null,Object? remindersEnabled = null,Object? languageCode = null,}) {
   return _then(_User(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
@@ -285,7 +287,8 @@ as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,dailyGoal: null == dailyGoal ? _self.dailyGoal : dailyGoal // ignore: cast_nullable_to_non_nullable
 as int,remindersEnabled: null == remindersEnabled ? _self.remindersEnabled : remindersEnabled // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,languageCode: null == languageCode ? _self.languageCode : languageCode // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

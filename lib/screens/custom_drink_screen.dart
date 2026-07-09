@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:artisan_cafe/core/extensions/context_extensions.dart';
 import '../core/theme/app_colors.dart';
 import '../core/constants/app_images.dart';
 import '../providers/add_brew_provider.dart';
@@ -34,10 +35,9 @@ class _CustomDrinkScreenState extends ConsumerState<CustomDrinkScreen> {
     super.dispose();
   }
 
-  final List<String> _strengthLabels = ["Subtle", "Light", "Moderate", "Bold", "Extra Strong"];
-
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -45,13 +45,13 @@ class _CustomDrinkScreenState extends ConsumerState<CustomDrinkScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: const Text('Custom Drink'),
+        title: Text(l10n.customDrinkTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.more_vert),
             color: AppColors.primary.withValues(alpha: 0.4),
             onPressed: () {},
-          )
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -66,7 +66,11 @@ class _CustomDrinkScreenState extends ConsumerState<CustomDrinkScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
-                  BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 4, offset: const Offset(0, 2)),
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
                 ],
                 image: const DecorationImage(
                   image: NetworkImage(AppImages.customDrinkBg),
@@ -92,8 +96,10 @@ class _CustomDrinkScreenState extends ConsumerState<CustomDrinkScreen> {
                     bottom: 16,
                     left: 16,
                     child: Text(
-                      'Craft your recipe',
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.white),
+                      l10n.craftRecipe,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.headlineMedium?.copyWith(color: Colors.white),
                     ),
                   ),
                 ],
@@ -102,24 +108,40 @@ class _CustomDrinkScreenState extends ConsumerState<CustomDrinkScreen> {
             const SizedBox(height: 32),
 
             // Drink Name
-            Text('Drink Name', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onSurfaceVariant)),
+            Text(
+              l10n.drinkName,
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: AppColors.onSurfaceVariant,
+              ),
+            ),
             const SizedBox(height: 8),
             TextField(
               controller: _nameController,
               decoration: InputDecoration(
-                hintText: 'e.g., Honey Lavender Latte',
-                hintStyle: TextStyle(color: AppColors.onSurfaceVariant.withValues(alpha: 0.5)),
+                hintText: l10n.drinkNameHint,
+                hintStyle: TextStyle(
+                  color: AppColors.onSurfaceVariant.withValues(alpha: 0.5),
+                ),
                 filled: true,
                 fillColor: AppColors.surfaceContainerLowest,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: AppColors.outlineVariant, width: 2),
+                  borderSide: const BorderSide(
+                    color: AppColors.outlineVariant,
+                    width: 2,
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: AppColors.tertiaryContainer, width: 2),
+                  borderSide: const BorderSide(
+                    color: AppColors.tertiaryContainer,
+                    width: 2,
+                  ),
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
               ),
             ),
             const SizedBox(height: 24),
@@ -128,16 +150,34 @@ class _CustomDrinkScreenState extends ConsumerState<CustomDrinkScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Strength', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onSurfaceVariant)),
+                Text(
+                  l10n.strength,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: AppColors.onSurfaceVariant,
+                  ),
+                ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.secondaryContainer,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Text(
-                    _strengthLabels[_strength.toInt() - 1],
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.onSecondaryContainer),
+                    [
+                      l10n.strengthSubtle,
+                      l10n.strengthLight,
+                      l10n.strengthModerate,
+                      l10n.strengthBold,
+                      l10n.strengthExtraStrong,
+                    ][_strength.toInt() - 1],
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.onSecondaryContainer,
+                    ),
                   ),
                 ),
               ],
@@ -161,14 +201,29 @@ class _CustomDrinkScreenState extends ConsumerState<CustomDrinkScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Mild', style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6))),
-                Text('Strong', style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6))),
+                Text(
+                  l10n.strengthMildLabel,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.onSurfaceVariant.withValues(alpha: 0.6),
+                  ),
+                ),
+                Text(
+                  l10n.strengthStrongLabel,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.onSurfaceVariant.withValues(alpha: 0.6),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 24),
 
             // Volume Chips
-            Text('Volume (ml)', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onSurfaceVariant)),
+            Text(
+              l10n.volumeMl,
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: AppColors.onSurfaceVariant,
+              ),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -177,7 +232,7 @@ class _CustomDrinkScreenState extends ConsumerState<CustomDrinkScreen> {
                 _buildVolumeChip('240ml'),
                 _buildVolumeChip('350ml'),
                 _buildVolumeChip('470ml'),
-                _buildVolumeChip('Custom'),
+                _buildVolumeChip(l10n.volumeCustom),
               ],
             ),
             const SizedBox(height: 24),
@@ -188,7 +243,9 @@ class _CustomDrinkScreenState extends ConsumerState<CustomDrinkScreen> {
               decoration: BoxDecoration(
                 color: AppColors.surfaceContainerLow,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.outlineVariant.withValues(alpha: 0.3)),
+                border: Border.all(
+                  color: AppColors.outlineVariant.withValues(alpha: 0.3),
+                ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -202,14 +259,25 @@ class _CustomDrinkScreenState extends ConsumerState<CustomDrinkScreen> {
                           color: AppColors.secondaryContainer,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Icon(Icons.opacity, color: AppColors.primary),
+                        child: const Icon(
+                          Icons.opacity,
+                          color: AppColors.primary,
+                        ),
                       ),
                       const SizedBox(width: 16),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Milk-based', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onSurface)),
-                          Text('Include dairy or alternatives', style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.onSurfaceVariant)),
+                          Text(
+                            l10n.milkBased,
+                            style: Theme.of(context).textTheme.labelMedium
+                                ?.copyWith(color: AppColors.onSurface),
+                          ),
+                          Text(
+                            l10n.milkBasedDesc,
+                            style: Theme.of(context).textTheme.labelSmall
+                                ?.copyWith(color: AppColors.onSurfaceVariant),
+                          ),
                         ],
                       ),
                     ],
@@ -228,21 +296,23 @@ class _CustomDrinkScreenState extends ConsumerState<CustomDrinkScreen> {
         ),
       ),
       bottomSheet: Container(
-        padding: const EdgeInsets.all(20).copyWith(bottom: MediaQuery.of(context).padding.bottom + 20),
-        decoration: const BoxDecoration(
-          color: AppColors.surfaceContainerLow,
-        ),
+        padding: const EdgeInsets.all(
+          20,
+        ).copyWith(bottom: MediaQuery.of(context).padding.bottom + 20),
+        decoration: const BoxDecoration(color: AppColors.surfaceContainerLow),
         child: SizedBox(
           width: double.infinity,
           height: 56,
           child: ElevatedButton(
             onPressed: () {
-              ref.read(addBrewWizardProvider.notifier).updateDrink(
-                name: _nameController.text.trim(),
-                strength: _strength,
-                volume: _selectedVolume,
-                isMilkBased: _isMilkBased,
-              );
+              ref
+                  .read(addBrewWizardProvider.notifier)
+                  .updateDrink(
+                    name: _nameController.text.trim(),
+                    strength: _strength,
+                    volume: _selectedVolume,
+                    isMilkBased: _isMilkBased,
+                  );
               context.push('/add_drink/details');
             },
             style: ElevatedButton.styleFrom(
@@ -250,13 +320,9 @@ class _CustomDrinkScreenState extends ConsumerState<CustomDrinkScreen> {
               foregroundColor: AppColors.onPrimary,
               elevation: 4,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text('Next', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                SizedBox(width: 8),
-                Icon(Icons.chevron_right, size: 20),
-              ],
+            child: Text(
+              l10n.continueButton,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
           ),
         ),
@@ -283,7 +349,9 @@ class _CustomDrinkScreenState extends ConsumerState<CustomDrinkScreen> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: isSelected ? AppColors.onPrimary : AppColors.onSurfaceVariant,
+            color: isSelected
+                ? AppColors.onPrimary
+                : AppColors.onSurfaceVariant,
           ),
         ),
       ),

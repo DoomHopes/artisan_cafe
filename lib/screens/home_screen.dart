@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:artisan_cafe/core/extensions/context_extensions.dart';
 import '../core/theme/app_colors.dart';
 import '../providers/brew_history_provider.dart';
+import '../providers/user_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -11,6 +13,8 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final brewsAsync = ref.watch(brewHistoryProvider);
+    final user = ref.watch(currentUserProvider).value;
+    final l10n = context.l10n;
 
     return Scaffold(
       backgroundColor: AppColors.surface,
@@ -33,7 +37,7 @@ class HomeScreen extends ConsumerWidget {
             ),
             const SizedBox(width: 12),
             Text(
-              'Artisan Cafe',
+              l10n.appName,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 color: AppColors.primary,
                 fontSize: 24,
@@ -68,14 +72,14 @@ class HomeScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Good Morning, Alex',
+                  l10n.goodMorning(user?.name ?? 'Alex'),
                   style: Theme.of(
                     context,
                   ).textTheme.headlineLarge?.copyWith(fontSize: 28),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Ready for your first brew?',
+                  l10n.readyForFirstBrew,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.onSurfaceVariant,
                   ),
@@ -158,7 +162,7 @@ class HomeScreen extends ConsumerWidget {
                               Text(
                                 latestBrew.name.isNotEmpty
                                     ? latestBrew.name
-                                    : 'Custom Drink',
+                                    : l10n.customDrink,
                                 style: Theme.of(context)
                                     .textTheme
                                     .headlineMedium
@@ -209,9 +213,7 @@ class HomeScreen extends ConsumerWidget {
                         style: BorderStyle.solid,
                       ),
                     ),
-                    child: const Center(
-                      child: Text('No drinks logged yet. Add one!'),
-                    ),
+                    child: Center(child: Text(l10n.noDrinksLogged)),
                   ),
                 const SizedBox(height: 16),
 
@@ -237,14 +239,14 @@ class HomeScreen extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Daily Caffeine Tip',
+                              l10n.dailyCaffeineTipTitle,
                               style: Theme.of(
                                 context,
                               ).textTheme.labelLarge?.copyWith(fontSize: 14),
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              '"Wait 90 minutes after waking up before your first cup to let your adenosine levels reset naturally. This helps avoid the afternoon crash."',
+                              l10n.dailyCaffeineTipText,
                               style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(
                                     color: AppColors.onSurfaceVariant,
@@ -274,7 +276,7 @@ class HomeScreen extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'HYDRATION',
+                              l10n.hydrationLabel,
                               style: Theme.of(context).textTheme.labelSmall
                                   ?.copyWith(
                                     color: AppColors.onSurfaceVariant,
@@ -294,7 +296,7 @@ class HomeScreen extends ConsumerWidget {
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  'Liters',
+                                  l10n.litersLabel,
                                   style: Theme.of(context).textTheme.labelSmall
                                       ?.copyWith(
                                         color: AppColors.onSurfaceVariant,
@@ -327,7 +329,7 @@ class HomeScreen extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'CAFFEINE',
+                              l10n.caffeineLabel,
                               style: Theme.of(context).textTheme.labelSmall
                                   ?.copyWith(
                                     color: AppColors.onSurfaceVariant,
@@ -347,7 +349,7 @@ class HomeScreen extends ConsumerWidget {
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  'mg',
+                                  l10n.mgLabel,
                                   style: Theme.of(context).textTheme.labelSmall
                                       ?.copyWith(
                                         color: AppColors.onSurfaceVariant,

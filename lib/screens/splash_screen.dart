@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:artisan_cafe/core/extensions/context_extensions.dart';
 import '../core/theme/app_colors.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -8,7 +9,8 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _progressAnimation;
   late AnimationController _pulseController;
@@ -21,15 +23,16 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       vsync: this,
       duration: const Duration(seconds: 3),
     );
-    _progressAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
-    
+    _progressAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
     _pulseController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1500),
     )..repeat(reverse: true);
-    
+
     _pulseAnimation = Tween<double>(begin: 0.4, end: 0.8).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
@@ -48,6 +51,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Center(
@@ -68,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 );
               },
               child: Text(
-                'Artisan Cafe',
+                l10n.appName,
                 style: Theme.of(context).textTheme.displaySmall?.copyWith(
                   color: AppColors.primaryContainer,
                   fontWeight: FontWeight.w700,
@@ -76,10 +80,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 80),
-            const SizedBox(height: 160), 
-            
+            const SizedBox(height: 160),
+
             TweenAnimationBuilder<double>(
               tween: Tween(begin: 0.0, end: 1.0),
               duration: const Duration(milliseconds: 1200),
@@ -103,9 +107,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                         child: child,
                       );
                     },
-                    child: const Text(
-                      'BREWING YOUR DAY...',
-                      style: TextStyle(
+                    child: Text(
+                      l10n.brewingYourDay,
+                      style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 2.4,
@@ -124,9 +128,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       builder: (context, child) {
                         return FractionallySizedBox(
                           widthFactor: _progressAnimation.value,
-                          child: Container(
-                            color: AppColors.primaryContainer,
-                          ),
+                          child: Container(color: AppColors.primaryContainer),
                         );
                       },
                     ),

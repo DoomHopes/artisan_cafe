@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:artisan_cafe/core/extensions/context_extensions.dart';
 import '../core/theme/app_colors.dart';
 import '../core/constants/app_images.dart';
 import '../providers/add_brew_provider.dart';
@@ -26,7 +27,10 @@ class _ReviewBrewScreenState extends ConsumerState<ReviewBrewScreen> {
   @override
   Widget build(BuildContext context) {
     final brewState = ref.watch(addBrewWizardProvider);
-    final dynamicCaffeine = ref.read(addBrewWizardProvider.notifier).calculateCaffeine();
+    final dynamicCaffeine = ref
+        .read(addBrewWizardProvider.notifier)
+        .calculateCaffeine();
+    final l10n = context.l10n;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -35,12 +39,12 @@ class _ReviewBrewScreenState extends ConsumerState<ReviewBrewScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: const Text('Review Brew'),
+        title: Text(l10n.reviewBrew),
         actions: [
           IconButton(
             icon: const Icon(Icons.close),
             onPressed: () => context.go('/'),
-          )
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -52,8 +56,18 @@ class _ReviewBrewScreenState extends ConsumerState<ReviewBrewScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text('Step 3 of 3', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onSurfaceVariant)),
-                Text('Ready to log', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onSurfaceVariant)),
+                Text(
+                  l10n.step3Of3,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: AppColors.onSurfaceVariant,
+                  ),
+                ),
+                Text(
+                  l10n.readyToLog,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: AppColors.onSurfaceVariant,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 8),
@@ -94,23 +108,53 @@ class _ReviewBrewScreenState extends ConsumerState<ReviewBrewScreen> {
                   Positioned(
                     right: -20,
                     top: -20,
-                    child: Icon(Icons.coffee, size: 120, color: AppColors.primary.withValues(alpha: 0.1)),
+                    child: Icon(
+                      Icons.coffee,
+                      size: 120,
+                      color: AppColors.primary.withValues(alpha: 0.1),
+                    ),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('BREW SUMMARY', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onSurfaceVariant, letterSpacing: 1.2)),
+                      Text(
+                        l10n.brewSummary,
+                        style: Theme.of(context).textTheme.labelMedium
+                            ?.copyWith(
+                              color: AppColors.onSurfaceVariant,
+                              letterSpacing: 1.2,
+                            ),
+                      ),
                       const SizedBox(height: 4),
-                      Text('${brewState.name.isEmpty ? 'Custom Drink' : brewState.name}, ${brewState.roastLevel}', style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.primary)),
+                      Text(
+                        '${brewState.name.isEmpty ? l10n.customDrinkTitle : brewState.name}, ${brewState.roastLevel}',
+                        style: Theme.of(context).textTheme.headlineMedium
+                            ?.copyWith(color: AppColors.primary),
+                      ),
                       const SizedBox(height: 16),
                       Wrap(
                         spacing: 8,
                         runSpacing: 8,
                         children: [
-                          _buildSummaryChip(Icons.location_on, brewState.origin),
-                          _buildSummaryChip(Icons.local_fire_department, '${brewState.roastLevel} Roast'),
-                          if (brewState.isMilkBased) _buildSummaryChip(Icons.water_drop, 'Milk based'),
-                          _buildSummaryChip(Icons.coffee_maker, brewState.brewMethod.replaceAll('_', ' ').toUpperCase()),
+                          _buildSummaryChip(
+                            Icons.location_on,
+                            brewState.origin,
+                          ),
+                          _buildSummaryChip(
+                            Icons.local_fire_department,
+                            '${brewState.roastLevel} Roast',
+                          ),
+                          if (brewState.isMilkBased)
+                            _buildSummaryChip(
+                              Icons.water_drop,
+                              l10n.milkBasedLabel,
+                            ),
+                          _buildSummaryChip(
+                            Icons.coffee_maker,
+                            brewState.brewMethod
+                                .replaceAll('_', ' ')
+                                .toUpperCase(),
+                          ),
                         ],
                       ),
                     ],
@@ -143,15 +187,33 @@ class _ReviewBrewScreenState extends ConsumerState<ReviewBrewScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('CAFFEINE IMPACT', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onPrimaryContainer, letterSpacing: 1.2)),
+                          Text(
+                            l10n.caffeineImpact,
+                            style: Theme.of(context).textTheme.labelMedium
+                                ?.copyWith(
+                                  color: AppColors.onPrimaryContainer,
+                                  letterSpacing: 1.2,
+                                ),
+                          ),
                           const SizedBox(height: 4),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.baseline,
                             textBaseline: TextBaseline.alphabetic,
                             children: [
-                              Text('$dynamicCaffeine', style: Theme.of(context).textTheme.displayMedium?.copyWith(color: AppColors.surface, fontSize: 40)),
+                              Text(
+                                '$dynamicCaffeine',
+                                style: Theme.of(context).textTheme.displayMedium
+                                    ?.copyWith(
+                                      color: AppColors.surface,
+                                      fontSize: 40,
+                                    ),
+                              ),
                               const SizedBox(width: 4),
-                              Text('mg', style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColors.surfaceDim)),
+                              Text(
+                                l10n.mgLabel,
+                                style: Theme.of(context).textTheme.headlineSmall
+                                    ?.copyWith(color: AppColors.surfaceDim),
+                              ),
                             ],
                           ),
                         ],
@@ -161,7 +223,9 @@ class _ReviewBrewScreenState extends ConsumerState<ReviewBrewScreen> {
                         decoration: BoxDecoration(
                           color: AppColors.surface.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.1),
+                          ),
                         ),
                         child: const Icon(Icons.bolt, color: AppColors.surface),
                       ),
@@ -171,20 +235,38 @@ class _ReviewBrewScreenState extends ConsumerState<ReviewBrewScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Daily Progress', style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.surfaceDim)),
-                      Text('320 / 400 mg', style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.surfaceDim)),
+                      Text(
+                        l10n.dailyProgress,
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppColors.surfaceDim,
+                        ),
+                      ),
+                      Text(
+                        l10n.dailyProgressValue("320", "400"),
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppColors.surfaceDim,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   LinearProgressIndicator(
                     value: 0.8,
-                    backgroundColor: const Color(0xFFE0D4C0).withValues(alpha: 0.2),
+                    backgroundColor: const Color(
+                      0xFFE0D4C0,
+                    ).withValues(alpha: 0.2),
                     color: const Color(0xFFD84315),
                     minHeight: 12,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   const SizedBox(height: 8),
-                  Text('Remaining: 80mg before your target daily limit.', style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.surfaceDim, fontStyle: FontStyle.italic)),
+                  Text(
+                    l10n.remainingLimitText("80"),
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.surfaceDim,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -200,7 +282,13 @@ class _ReviewBrewScreenState extends ConsumerState<ReviewBrewScreen> {
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: const Color(0xFFE0D4C0)),
                       boxShadow: [
-                        BoxShadow(color: AppColors.primaryContainer.withValues(alpha: 0.08), blurRadius: 24, offset: const Offset(0, 8)),
+                        BoxShadow(
+                          color: AppColors.primaryContainer.withValues(
+                            alpha: 0.08,
+                          ),
+                          blurRadius: 24,
+                          offset: const Offset(0, 8),
+                        ),
                       ],
                       image: const DecorationImage(
                         image: NetworkImage(AppImages.reviewMap),
@@ -219,17 +307,38 @@ class _ReviewBrewScreenState extends ConsumerState<ReviewBrewScreen> {
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: const Color(0xFFE0D4C0)),
                       boxShadow: [
-                        BoxShadow(color: AppColors.primaryContainer.withValues(alpha: 0.08), blurRadius: 24, offset: const Offset(0, 8)),
+                        BoxShadow(
+                          color: AppColors.primaryContainer.withValues(
+                            alpha: 0.08,
+                          ),
+                          blurRadius: 24,
+                          offset: const Offset(0, 8),
+                        ),
                       ],
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.schedule, color: Color(0xFFD84315), size: 36),
+                        const Icon(
+                          Icons.schedule,
+                          color: Color(0xFFD84315),
+                          size: 36,
+                        ),
                         const SizedBox(height: 12),
-                        Text('Estimated Peak', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onSurfaceVariant)),
+                        Text(
+                          l10n.estimatedPeak,
+                          style: Theme.of(context).textTheme.labelMedium
+                              ?.copyWith(color: AppColors.onSurfaceVariant),
+                        ),
                         const SizedBox(height: 4),
-                        Text('10:45 AM', style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.primary, fontSize: 20)),
+                        Text(
+                          '10:45 AM',
+                          style: Theme.of(context).textTheme.headlineMedium
+                              ?.copyWith(
+                                color: AppColors.primary,
+                                fontSize: 20,
+                              ),
+                        ),
                       ],
                     ),
                   ),
@@ -247,16 +356,31 @@ class _ReviewBrewScreenState extends ConsumerState<ReviewBrewScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3E2723),
                   foregroundColor: const Color(0xFFFFF3E0),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   elevation: 8,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(_isLogging ? 'Logging...' : 'Log Brew', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                    Text(
+                      _isLogging ? 'Logging...' : 'Log Brew',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     const SizedBox(width: 12),
                     if (_isLogging)
-                      const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Color(0xFFFFF3E0), strokeWidth: 2))
+                      const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Color(0xFFFFF3E0),
+                          strokeWidth: 2,
+                        ),
+                      )
                     else
                       const Icon(Icons.send, size: 20),
                   ],
@@ -282,7 +406,13 @@ class _ReviewBrewScreenState extends ConsumerState<ReviewBrewScreen> {
         children: [
           Icon(icon, size: 16, color: AppColors.onSecondaryContainer),
           const SizedBox(width: 6),
-          Text(label, style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onSecondaryContainer, fontSize: 13)),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: AppColors.onSecondaryContainer,
+              fontSize: 13,
+            ),
+          ),
         ],
       ),
     );

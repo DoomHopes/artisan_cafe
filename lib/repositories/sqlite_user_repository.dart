@@ -18,7 +18,18 @@ class SqliteUserRepository implements UserRepository {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: 1, onCreate: _createDB);
+    return await openDatabase(
+      path,
+      version: 2,
+      onUpgrade: _upgradeDB,
+      onCreate: _createDB,
+    );
+  }
+
+  Future<void> _upgradeDB(Database db, int oldVersion, int newVersion) async {
+    // For development, just recreate table
+    await db.execute('DROP TABLE IF EXISTS $_tableName');
+    await _createDB(db, newVersion);
   }
 
   Future<void> _createDB(Database db, int version) async {
@@ -30,7 +41,8 @@ class SqliteUserRepository implements UserRepository {
         name TEXT NOT NULL,
         createdAt TEXT NOT NULL,
         dailyGoal INTEGER NOT NULL,
-        remindersEnabled INTEGER NOT NULL
+        remindersEnabled INTEGER NOT NULL,
+        languageCode TEXT NOT NULL
       )
     ''');
   }

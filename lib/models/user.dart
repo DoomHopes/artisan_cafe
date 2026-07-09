@@ -13,6 +13,7 @@ abstract class User with _$User {
     required DateTime createdAt,
     @Default(3) int dailyGoal,
     @Default(true) bool remindersEnabled,
+    @Default('en') String languageCode,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

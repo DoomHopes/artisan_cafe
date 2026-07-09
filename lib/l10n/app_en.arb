@@ -1,0 +1,179 @@
+{
+  "@@locale": "en",
+  "appName": "Artisan Cafe",
+  "@appName": {
+    "description": "The title of the application"
+  },
+  "editName": "Edit Name",
+  "enterNewName": "Enter new name",
+  "cancel": "Cancel",
+  "save": "Save",
+  "homeBrewerSince": "Home Brewer since {year}",
+  "@homeBrewerSince": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "dailyGoal": "Daily Goal",
+  "cupsPerDay": "cups/day",
+  "reminders": "Reminders",
+  "remindersDescription": "Receive smart prompts to log your brews and track caffeine metabolism.",
+  "language": "Language",
+  "exportData": "Export Data",
+  "exportDataDescription": "Download your brew history as CSV",
+  "signOut": "Sign Out",
+  "signOutDescription": "Disconnect your account and remove local data.",
+  "enterCredentials": "Please enter username and password",
+  "welcomeBack": "Welcome Back",
+  "readyForBrewing": "Ready for your next brewing ritual?",
+  "loginLabel": "LOGIN",
+  "usernameHint": "Username or Email",
+  "passwordLabel": "PASSWORD",
+  "restoreBackup": "RESTORE FROM BACKUP",
+  "orText": "OR",
+  "createProfile": "Create a new profile",
+  "copyrightText": "© 2024 Ethos Brewing Rituals",
+  "privacyLink": "Privacy",
+  "termsLink": "Terms",
+  "supportLink": "Support",
+  "goodMorning": "Good Morning, {name}",
+  "@goodMorning": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "readyForFirstBrew": "Ready for your first brew?",
+  "customDrink": "Custom Drink",
+  "noDrinksLogged": "No drinks logged yet. Add one!",
+  "dailyCaffeineTipTitle": "Daily Caffeine Tip",
+  "dailyCaffeineTipText": "\"Wait 90 minutes after waking up before your first cup to let your adenosine levels reset naturally. This helps avoid the afternoon crash.\"",
+  "hydrationLabel": "HYDRATION",
+  "litersLabel": "Liters",
+  "caffeineLabel": "CAFFEINE",
+  "mgLabel": "mg",
+  "fillAllFields": "Please fill all fields",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "startRitual": "Start Your Ritual",
+  "setFoundation": "Set the foundation for your brewing journey. Your data is your own.",
+  "confirmPasswordLabel": "CONFIRM PASSWORD",
+  "enterUsernameHint": "Enter your username",
+  "privacyNote": "Everything stays on your device. We value your focus and privacy; no accounts or cloud sync required.",
+  "settingUp": "Setting up...",
+  "createAccount": "Create Account",
+  "alreadyHaveAccount": "Already have an account?",
+  "loginLink": "Login",
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "brewHistory": "Brew History",
+  "brewHistorySubtitle": "Your coffee journey, curated cup by cup.",
+  "todaysIntake": "TODAY'S INTAKE",
+  "avgRoast": "AVG ROAST",
+  "totalCups": "TOTAL CUPS",
+  "noHistoryYet": "No history yet.",
+  "weeklyRitual": "Weekly Ritual",
+  "mostDrunkTitle": "Most Drunk",
+  "peakTimeTitle": "Peak Time",
+  "roastSubtitle": "{origin} • {roast} Roast",
+  "@roastSubtitle": {
+    "placeholders": {
+      "origin": {
+        "type": "String"
+      },
+      "roast": {
+        "type": "String"
+      }
+    }
+  },
+  "weeklyInsights": "Weekly Insights",
+  "weeklyInsightsSubtitle": "Your caffeine ritual, quantified.",
+  "weeklyAverage": "Weekly Average",
+  "totalCaffeineLabel": "Total Caffeine",
+  "consumptionTrends": "Consumption Trends",
+  "week": "Week",
+  "month": "Month",
+  "shortMon": "M",
+  "shortTue": "T",
+  "shortWed": "W",
+  "shortThu": "T",
+  "shortFri": "F",
+  "shortSat": "S",
+  "shortSun": "S",
+  "beanPreferences": "Bean Preferences",
+  "brewingTip": "Brewing Tip",
+  "optimizeExtraction": "Optimize your extraction",
+  "optimizeExtractionText": "Based on your frequency, you might enjoy a coarser grind for your morning ritual to reduce acidity.",
+  "learnHow": "Learn how",
+  "ethiopianYirgacheffe": "Ethiopian Yirgacheffe",
+  "coldBrewHouse": "Cold Brew (House)",
+  "oatMilkLatte": "Oat Milk Latte",
+  "navHome": "Home",
+  "navHistory": "History",
+  "navStats": "Stats",
+  "navProfile": "Profile",
+  "brewDetails": "Brew Details",
+  "step2Of3": "Step 2 of 3",
+  "configuration": "Configuration",
+  "coffeeOrigin": "Coffee Origin",
+  "roastLevel": "Roast Level",
+  "roastLight": "Light",
+  "roastMedium": "Medium",
+  "roastDark": "Dark",
+  "brewMethodTitle": "Brew Method",
+  "methodV60": "V60",
+  "methodV60Desc": "Clean and bright pour-over",
+  "methodFrenchPress": "French Press",
+  "methodFrenchPressDesc": "Full-bodied and immersive",
+  "methodAeroPress": "AeroPress",
+  "methodAeroPressDesc": "Versatile and travel-friendly",
+  "methodMokaPot": "Moka Pot",
+  "methodMokaPotDesc": "Rich and espresso-like",
+  "continueButton": "Continue",
+  "customDrinkTitle": "Custom Drink",
+  "craftRecipe": "Craft your recipe",
+  "drinkName": "Drink Name",
+  "drinkNameHint": "e.g., Honey Lavender Latte",
+  "strength": "Strength",
+  "strengthSubtle": "Subtle",
+  "strengthLight": "Light",
+  "strengthModerate": "Moderate",
+  "strengthBold": "Bold",
+  "strengthExtraStrong": "Extra Strong",
+  "strengthMildLabel": "Mild",
+  "strengthStrongLabel": "Strong",
+  "volumeMl": "Volume (ml)",
+  "volumeCustom": "Custom",
+  "milkBased": "Milk-based",
+  "milkBasedDesc": "Include dairy or alternatives",
+  "reviewBrew": "Review Brew",
+  "step3Of3": "Step 3 of 3",
+  "readyToLog": "Ready to log",
+  "brewSummary": "BREW SUMMARY",
+  "milkBasedLabel": "Milk based",
+  "caffeineImpact": "CAFFEINE IMPACT",
+  "dailyProgress": "Daily Progress",
+  "dailyProgressValue": "{current} / {target} mg",
+  "@dailyProgressValue": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "remainingLimitText": "Remaining: {remaining}mg before your target daily limit.",
+  "@remainingLimitText": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "estimatedPeak": "Estimated Peak",
+  "brewingYourDay": "BREWING YOUR DAY..."
+}

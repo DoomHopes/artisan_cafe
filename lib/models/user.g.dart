@@ -14,6 +14,7 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   createdAt: DateTime.parse(json['createdAt'] as String),
   dailyGoal: (json['dailyGoal'] as num?)?.toInt() ?? 3,
   remindersEnabled: json['remindersEnabled'] as bool? ?? true,
+  languageCode: json['languageCode'] as String? ?? 'en',
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -24,4 +25,5 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'createdAt': instance.createdAt.toIso8601String(),
   'dailyGoal': instance.dailyGoal,
   'remindersEnabled': instance.remindersEnabled,
+  'languageCode': instance.languageCode,
 };

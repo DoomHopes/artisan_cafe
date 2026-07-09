@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:artisan_cafe/core/extensions/context_extensions.dart';
 import '../core/theme/app_colors.dart';
 
 class StatsScreen extends StatelessWidget {
@@ -6,6 +7,7 @@ class StatsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -15,7 +17,7 @@ class StatsScreen extends StatelessWidget {
             const Icon(Icons.coffee, color: AppColors.primary, size: 24),
             const SizedBox(width: 12),
             Text(
-              'Artisan Cafe',
+              l10n.appName,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 color: AppColors.primary,
                 fontSize: 24,
@@ -30,14 +32,14 @@ class StatsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Weekly Insights',
+              l10n.weeklyInsights,
               style: Theme.of(
                 context,
               ).textTheme.headlineLarge?.copyWith(fontSize: 28),
             ),
             const SizedBox(height: 4),
             Text(
-              'Your caffeine ritual, quantified.',
+              l10n.weeklyInsightsSubtitle,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppColors.onSurfaceVariant,
               ),
@@ -68,7 +70,7 @@ class StatsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Weekly Average',
+                          l10n.weeklyAverage,
                           style: Theme.of(context).textTheme.labelMedium
                               ?.copyWith(
                                 color: AppColors.onSurfaceVariant,
@@ -87,7 +89,7 @@ class StatsScreen extends StatelessWidget {
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              'cups/day',
+                              l10n.cupsPerDay,
                               style: Theme.of(context).textTheme.labelSmall
                                   ?.copyWith(color: AppColors.onSurfaceVariant),
                             ),
@@ -118,7 +120,7 @@ class StatsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Total Caffeine',
+                          l10n.totalCaffeineLabel,
                           style: Theme.of(context).textTheme.labelMedium
                               ?.copyWith(
                                 color: AppColors.onPrimaryContainer,
@@ -137,7 +139,7 @@ class StatsScreen extends StatelessWidget {
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              'mg',
+                              l10n.mgLabel,
                               style: Theme.of(context).textTheme.labelSmall
                                   ?.copyWith(
                                     color: AppColors.onPrimaryContainer,
@@ -174,7 +176,7 @@ class StatsScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Consumption Trends',
+                        l10n.consumptionTrends,
                         style: Theme.of(
                           context,
                         ).textTheme.labelMedium?.copyWith(fontSize: 14),
@@ -190,9 +192,9 @@ class StatsScreen extends StatelessWidget {
                               color: AppColors.secondaryContainer,
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            child: const Text(
-                              'Week',
-                              style: TextStyle(
+                            child: Text(
+                              l10n.week,
+                              style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.onSecondaryContainer,
@@ -205,9 +207,9 @@ class StatsScreen extends StatelessWidget {
                               horizontal: 12,
                               vertical: 4,
                             ),
-                            child: const Text(
-                              'Month',
-                              style: TextStyle(
+                            child: Text(
+                              l10n.month,
+                              style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.onSurfaceVariant,
@@ -239,13 +241,13 @@ class StatsScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            _buildBar('M', 0.6, false),
-                            _buildBar('T', 0.85, true),
-                            _buildBar('W', 0.4, false),
-                            _buildBar('T', 0.95, true),
-                            _buildBar('F', 0.7, false),
-                            _buildBar('S', 0.3, false),
-                            _buildBar('S', 0.15, false),
+                            _buildBar(l10n.shortMon, 0.6, false),
+                            _buildBar(l10n.shortTue, 0.85, true),
+                            _buildBar(l10n.shortWed, 0.4, false),
+                            _buildBar(l10n.shortThu, 0.95, true),
+                            _buildBar(l10n.shortFri, 0.7, false),
+                            _buildBar(l10n.shortSat, 0.3, false),
+                            _buildBar(l10n.shortSun, 0.15, false),
                           ],
                         ),
                       ],
@@ -258,7 +260,7 @@ class StatsScreen extends StatelessWidget {
 
             // Bean Preferences
             Text(
-              'Bean Preferences',
+              l10n.beanPreferences,
               style: Theme.of(
                 context,
               ).textTheme.headlineMedium?.copyWith(fontSize: 24),
@@ -266,21 +268,21 @@ class StatsScreen extends StatelessWidget {
             const SizedBox(height: 12),
             _buildPreferenceItem(
               Icons.coffee_maker,
-              'Ethiopian Yirgacheffe',
+              l10n.ethiopianYirgacheffe,
               0.42,
               true,
             ),
             const SizedBox(height: 12),
             _buildPreferenceItem(
               Icons.water_drop,
-              'Cold Brew (House)',
+              l10n.coldBrewHouse,
               0.28,
               false,
             ),
             const SizedBox(height: 12),
             _buildPreferenceItem(
               Icons.local_cafe,
-              'Oat Milk Latte',
+              l10n.oatMilkLatte,
               0.15,
               false,
             ),
@@ -306,7 +308,7 @@ class StatsScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Brewing Tip',
+                        l10n.brewingTip,
                         style: Theme.of(context).textTheme.labelMedium
                             ?.copyWith(color: const Color(0xFF872000)),
                       ),
@@ -314,12 +316,12 @@ class StatsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Optimize your extraction',
+                    l10n.optimizeExtraction,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Based on your frequency, you might enjoy a coarser grind for your morning ritual to reduce acidity.',
+                    l10n.optimizeExtractionText,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppColors.onSurfaceVariant,
                     ),
@@ -328,7 +330,7 @@ class StatsScreen extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'Learn how',
+                        l10n.learnHow,
                         style: Theme.of(context).textTheme.labelMedium
                             ?.copyWith(color: AppColors.primary),
                       ),

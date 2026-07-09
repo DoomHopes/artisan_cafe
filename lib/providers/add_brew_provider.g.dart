@@ -41,7 +41,7 @@ final class AddBrewWizardProvider
   }
 }
 
-String _$addBrewWizardHash() => r'67321e0ec624d45cfd154aeb534722d8cb36cf16';
+String _$addBrewWizardHash() => r'5a15047213ecc5126a939f00bd86f985ef96958f';
 
 abstract class _$AddBrewWizard extends $Notifier<AddBrewState> {
   AddBrewState build();

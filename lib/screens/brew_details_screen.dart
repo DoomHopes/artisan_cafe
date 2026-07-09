@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:artisan_cafe/core/extensions/context_extensions.dart';
 import '../core/theme/app_colors.dart';
 import '../providers/add_brew_provider.dart';
 
@@ -27,6 +28,7 @@ class _BrewDetailsScreenState extends ConsumerState<BrewDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -34,7 +36,7 @@ class _BrewDetailsScreenState extends ConsumerState<BrewDetailsScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: const Text('Brew Details'),
+        title: Text(l10n.brewDetails),
         actions: const [SizedBox(width: 48)], // Spacer for centering
       ),
       body: SingleChildScrollView(
@@ -47,8 +49,18 @@ class _BrewDetailsScreenState extends ConsumerState<BrewDetailsScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text('Step 2 of 3', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.onSurfaceVariant)),
-                Text('Configuration', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.primary)),
+                Text(
+                  l10n.step2Of3,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: AppColors.onSurfaceVariant,
+                  ),
+                ),
+                Text(
+                  l10n.configuration,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelMedium?.copyWith(color: AppColors.primary),
+                ),
               ],
             ),
             const SizedBox(height: 8),
@@ -62,7 +74,12 @@ class _BrewDetailsScreenState extends ConsumerState<BrewDetailsScreen> {
             const SizedBox(height: 32),
 
             // Coffee Origin
-            Text('Coffee Origin', style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.primary)),
+            Text(
+              l10n.coffeeOrigin,
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(color: AppColors.primary),
+            ),
             const SizedBox(height: 16),
             GridView.count(
               crossAxisCount: 2,
@@ -81,34 +98,64 @@ class _BrewDetailsScreenState extends ConsumerState<BrewDetailsScreen> {
             const SizedBox(height: 32),
 
             // Roast Level
-            Text('Roast Level', style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.primary)),
+            Text(
+              l10n.roastLevel,
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(color: AppColors.primary),
+            ),
             const SizedBox(height: 16),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  _buildRoastChip('Light'),
+                  _buildRoastChip(l10n.roastLight),
                   const SizedBox(width: 8),
-                  _buildRoastChip('Medium'),
+                  _buildRoastChip(l10n.roastMedium),
                   const SizedBox(width: 8),
-                  _buildRoastChip('Dark'),
+                  _buildRoastChip(l10n.roastDark),
                 ],
               ),
             ),
             const SizedBox(height: 32),
 
             // Brew Method
-            Text('Brew Method', style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.primary)),
+            Text(
+              l10n.brewMethodTitle,
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(color: AppColors.primary),
+            ),
             const SizedBox(height: 16),
             Column(
               children: [
-                _buildMethodRadio('v60', 'V60', 'Clean and bright pour-over', Icons.coffee_maker),
+                _buildMethodRadio(
+                  'v60',
+                  l10n.methodV60,
+                  l10n.methodV60Desc,
+                  Icons.coffee_maker,
+                ),
                 const SizedBox(height: 8),
-                _buildMethodRadio('french_press', 'French Press', 'Full-bodied and immersive', Icons.filter_list),
+                _buildMethodRadio(
+                  'french_press',
+                  l10n.methodFrenchPress,
+                  l10n.methodFrenchPressDesc,
+                  Icons.filter_list,
+                ),
                 const SizedBox(height: 8),
-                _buildMethodRadio('aeropress', 'AeroPress', 'Versatile and travel-friendly', Icons.vibration),
+                _buildMethodRadio(
+                  'aeropress',
+                  l10n.methodAeroPress,
+                  l10n.methodAeroPressDesc,
+                  Icons.vibration,
+                ),
                 const SizedBox(height: 8),
-                _buildMethodRadio('moka_pot', 'Moka Pot', 'Rich and espresso-like', Icons.local_fire_department),
+                _buildMethodRadio(
+                  'moka_pot',
+                  l10n.methodMokaPot,
+                  l10n.methodMokaPotDesc,
+                  Icons.local_fire_department,
+                ),
               ],
             ),
             const SizedBox(height: 100),
@@ -116,7 +163,9 @@ class _BrewDetailsScreenState extends ConsumerState<BrewDetailsScreen> {
         ),
       ),
       bottomSheet: Container(
-        padding: const EdgeInsets.all(20).copyWith(bottom: MediaQuery.of(context).padding.bottom + 20),
+        padding: const EdgeInsets.all(
+          20,
+        ).copyWith(bottom: MediaQuery.of(context).padding.bottom + 20),
         decoration: BoxDecoration(
           color: AppColors.surface.withValues(alpha: 0.8),
         ),
@@ -125,11 +174,13 @@ class _BrewDetailsScreenState extends ConsumerState<BrewDetailsScreen> {
           height: 56,
           child: ElevatedButton(
             onPressed: () {
-              ref.read(addBrewWizardProvider.notifier).updateDetails(
-                origin: _selectedOrigin,
-                roastLevel: _selectedRoast,
-                brewMethod: _selectedMethod,
-              );
+              ref
+                  .read(addBrewWizardProvider.notifier)
+                  .updateDetails(
+                    origin: _selectedOrigin,
+                    roastLevel: _selectedRoast,
+                    brewMethod: _selectedMethod,
+                  );
               context.push('/add_drink/review');
             },
             style: ElevatedButton.styleFrom(
@@ -137,7 +188,10 @@ class _BrewDetailsScreenState extends ConsumerState<BrewDetailsScreen> {
               foregroundColor: AppColors.onPrimary,
               elevation: 4,
             ),
-            child: const Text('Continue', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+            child: Text(
+              l10n.continueButton,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
           ),
         ),
       ),
@@ -151,7 +205,9 @@ class _BrewDetailsScreenState extends ConsumerState<BrewDetailsScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryContainer : AppColors.surfaceContainerLow,
+          color: isSelected
+              ? AppColors.primaryContainer
+              : AppColors.surfaceContainerLow,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected ? AppColors.primaryContainer : Colors.transparent,
@@ -173,7 +229,9 @@ class _BrewDetailsScreenState extends ConsumerState<BrewDetailsScreen> {
             Text(
               subtitle,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: isSelected ? AppColors.onPrimaryContainer : AppColors.onSurfaceVariant,
+                color: isSelected
+                    ? AppColors.onPrimaryContainer
+                    : AppColors.onSurfaceVariant,
               ),
             ),
           ],
@@ -189,7 +247,9 @@ class _BrewDetailsScreenState extends ConsumerState<BrewDetailsScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryContainer : AppColors.secondaryFixed,
+          color: isSelected
+              ? AppColors.primaryContainer
+              : AppColors.secondaryFixed,
           borderRadius: BorderRadius.circular(32),
         ),
         child: Text(
@@ -197,14 +257,21 @@ class _BrewDetailsScreenState extends ConsumerState<BrewDetailsScreen> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: isSelected ? AppColors.onPrimary : AppColors.onSecondaryFixed,
+            color: isSelected
+                ? AppColors.onPrimary
+                : AppColors.onSecondaryFixed,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildMethodRadio(String value, String title, String subtitle, IconData icon) {
+  Widget _buildMethodRadio(
+    String value,
+    String title,
+    String subtitle,
+    IconData icon,
+  ) {
     bool isSelected = _selectedMethod == value;
     return GestureDetector(
       onTap: () => setState(() => _selectedMethod = value),
@@ -231,8 +298,18 @@ class _BrewDetailsScreenState extends ConsumerState<BrewDetailsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.primary)),
-                  Text(subtitle, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.onSurfaceVariant)),
+                  Text(
+                    title,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelMedium?.copyWith(color: AppColors.primary),
+                  ),
+                  Text(
+                    subtitle,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.onSurfaceVariant,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -242,13 +319,24 @@ class _BrewDetailsScreenState extends ConsumerState<BrewDetailsScreen> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: isSelected ? AppColors.primaryContainer : AppColors.outlineVariant,
+                  color: isSelected
+                      ? AppColors.primaryContainer
+                      : AppColors.outlineVariant,
                   width: 2,
                 ),
                 color: isSelected ? AppColors.primary : Colors.transparent,
               ),
               child: isSelected
-                  ? Center(child: Container(width: 8, height: 8, decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle)))
+                  ? Center(
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    )
                   : null,
             ),
           ],
