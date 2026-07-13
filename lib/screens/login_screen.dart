@@ -70,230 +70,219 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   MediaQuery.of(context).padding.top -
                   MediaQuery.of(context).padding.bottom,
             ),
-            child: IntrinsicHeight(
-              child: Column(
-                children: [
-                  // Header
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 48,
-                      horizontal: 24,
-                    ),
-                    child: Center(
-                      child: Text(
-                        l10n.appName,
-                        style: textTheme.headlineMedium?.copyWith(
-                          color: AppColors.primary,
-                        ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Header
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 48,
+                    horizontal: 24,
+                  ),
+                  child: Center(
+                    child: Text(
+                      l10n.appName,
+                      style: textTheme.headlineMedium?.copyWith(
+                        color: AppColors.primary,
                       ),
                     ),
                   ),
+                ),
 
-                  // Main Content Canvas
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 40,
-                      ),
-                      child: Center(
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 448),
-                          child: Column(
+                // Main Content Canvas
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 40,
+                  ),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 448),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Hero Iconography
+                          Container(
+                            width: 80,
+                            height: 80,
+                            decoration: const BoxDecoration(
+                              color: AppColors.secondaryContainer,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.coffee_maker_outlined,
+                              color: AppColors.primary,
+                              size: 40,
+                            ),
+                          ),
+                          const SizedBox(height: 48),
+
+                          // Headlines
+                          Text(
+                            l10n.welcomeBack,
+                            style: textTheme.displaySmall?.copyWith(
+                              color: AppColors.primary,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+
+                          // Form
+                          Container(
+                            padding: const EdgeInsets.all(24),
+                            decoration: BoxDecoration(
+                              color: AppColors.surfaceContainerLow,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: AppColors.secondaryContainer.withValues(
+                                  alpha: 0.5,
+                                ),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.primaryContainer.withValues(
+                                    alpha: 0.08,
+                                  ),
+                                  blurRadius: 20,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                _buildTextField(
+                                  label: l10n.loginLabel,
+                                  hint: l10n.usernameHint,
+                                  controller: _usernameController,
+                                  textTheme: textTheme,
+                                ),
+                                const SizedBox(height: 24),
+                                _buildTextField(
+                                  label: l10n.passwordLabel,
+                                  hint: '••••••••',
+                                  controller: _passwordController,
+                                  isPassword: true,
+                                  textTheme: textTheme,
+                                ),
+                                const SizedBox(height: 32),
+
+                                // Actions
+                                OutlinedButton(
+                                  onPressed: _handleLogin,
+                                  style: OutlinedButton.styleFrom(
+                                    foregroundColor: AppColors.primary,
+                                    side: const BorderSide(
+                                      color: AppColors.primary,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 20,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    textStyle: textTheme.labelLarge,
+                                  ),
+                                  child: Text(l10n.loginLabel),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+
+                          // Subtle Actions
+                          TextButton.icon(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.cloud_download_outlined,
+                              size: 16,
+                            ),
+                            label: Text(l10n.restoreBackup),
+                            style: TextButton.styleFrom(
+                              foregroundColor: AppColors.secondary,
+                              textStyle: textTheme.labelMedium?.copyWith(
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // Hero Iconography
                               Container(
-                                width: 80,
-                                height: 80,
-                                decoration: const BoxDecoration(
-                                  color: AppColors.secondaryContainer,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.coffee_maker_outlined,
-                                  color: AppColors.primary,
-                                  size: 40,
-                                ),
+                                width: 32,
+                                height: 1,
+                                color: AppColors.outlineVariant,
                               ),
-                              const SizedBox(height: 48),
-
-                              // Headlines
+                              const SizedBox(width: 8),
                               Text(
-                                l10n.welcomeBack,
-                                style: textTheme.displaySmall?.copyWith(
-                                  color: AppColors.primary,
+                                l10n.orText,
+                                style: textTheme.labelSmall?.copyWith(
+                                  color: AppColors.outlineVariant,
                                 ),
                               ),
-                              const SizedBox(height: 8),
-                              Text(
-                                l10n.readyForBrewing,
-                                style: textTheme.bodyLarge?.copyWith(
-                                  color: AppColors.secondary,
-                                ),
-                              ),
-                              const SizedBox(height: 48),
-
-                              // Form
+                              const SizedBox(width: 8),
                               Container(
-                                padding: const EdgeInsets.all(24),
-                                decoration: BoxDecoration(
-                                  color: AppColors.surfaceContainerLow,
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: AppColors.secondaryContainer
-                                        .withValues(alpha: 0.5),
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: AppColors.primaryContainer
-                                          .withValues(alpha: 0.08),
-                                      blurRadius: 20,
-                                      offset: const Offset(0, 4),
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    _buildTextField(
-                                      label: l10n.loginLabel,
-                                      hint: l10n.usernameHint,
-                                      controller: _usernameController,
-                                      textTheme: textTheme,
-                                    ),
-                                    const SizedBox(height: 24),
-                                    _buildTextField(
-                                      label: l10n.passwordLabel,
-                                      hint: '••••••••',
-                                      controller: _passwordController,
-                                      isPassword: true,
-                                      textTheme: textTheme,
-                                    ),
-                                    const SizedBox(height: 32),
-
-                                    // Actions
-                                    OutlinedButton(
-                                      onPressed: _handleLogin,
-                                      style: OutlinedButton.styleFrom(
-                                        foregroundColor: AppColors.primary,
-                                        side: const BorderSide(
-                                          color: AppColors.primary,
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 20,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                        ),
-                                        textStyle: textTheme.labelLarge,
-                                      ),
-                                      child: Text(l10n.loginLabel),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 48),
-
-                              // Subtle Actions
-                              TextButton.icon(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.cloud_download_outlined,
-                                  size: 16,
-                                ),
-                                label: Text(l10n.restoreBackup),
-                                style: TextButton.styleFrom(
-                                  foregroundColor: AppColors.secondary,
-                                  textStyle: textTheme.labelMedium?.copyWith(
-                                    letterSpacing: 1.2,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 32,
-                                    height: 1,
-                                    color: AppColors.outlineVariant,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    l10n.orText,
-                                    style: textTheme.labelSmall?.copyWith(
-                                      color: AppColors.outlineVariant,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Container(
-                                    width: 32,
-                                    height: 1,
-                                    color: AppColors.outlineVariant,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              TextButton(
-                                onPressed: () {
-                                  context.push('/register');
-                                },
-                                style: TextButton.styleFrom(
-                                  foregroundColor: AppColors.secondary,
-                                ),
-                                child: Text(
-                                  l10n.createProfile,
-                                  style: textTheme.bodyMedium?.copyWith(
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
+                                width: 32,
+                                height: 1,
+                                color: AppColors.outlineVariant,
                               ),
                             ],
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  // Footer
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 24,
-                      horizontal: 24,
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        top: BorderSide(color: AppColors.secondaryContainer),
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          l10n.copyrightText,
-                          style: textTheme.bodyMedium?.copyWith(
-                            color: AppColors.primary,
+                          const SizedBox(height: 5),
+                          TextButton(
+                            onPressed: () {
+                              context.push('/register');
+                            },
+                            style: TextButton.styleFrom(
+                              foregroundColor: AppColors.secondary,
+                            ),
+                            child: Text(
+                              l10n.createProfile,
+                              style: textTheme.bodyMedium?.copyWith(
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _buildFooterLink(l10n.privacyLink, textTheme),
-                            const SizedBox(width: 24),
-                            _buildFooterLink(l10n.termsLink, textTheme),
-                            const SizedBox(width: 24),
-                            _buildFooterLink(l10n.supportLink, textTheme),
-                          ],
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ],
-              ),
+                ),
+
+                // Footer
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 24,
+                    horizontal: 24,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(color: AppColors.secondaryContainer),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        l10n.copyrightText,
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildFooterLink(l10n.privacyLink, textTheme),
+                          const SizedBox(width: 24),
+                          _buildFooterLink(l10n.termsLink, textTheme),
+                          const SizedBox(width: 24),
+                          _buildFooterLink(l10n.supportLink, textTheme),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),

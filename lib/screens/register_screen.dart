@@ -93,13 +93,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   MediaQuery.of(context).padding.top -
                   MediaQuery.of(context).padding.bottom,
             ),
-            child: IntrinsicHeight(
-              child: Column(
-                children: [
-                  // Top App Bar
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Top App Bar
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                      vertical: 48,
+                      vertical: 20,
                       horizontal: 24,
                     ),
                     child: Center(
@@ -113,17 +113,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
 
                   // Main Content Canvas
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 40,
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 40,
+                    ),
                       child: Center(
                         child: ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 480),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               // Header
                               Text(
@@ -135,11 +134,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               const SizedBox(height: 16),
                               Text(
                                 l10n.setFoundation,
+                                textAlign: TextAlign.center,
                                 style: textTheme.bodyLarge?.copyWith(
                                   color: AppColors.secondary,
                                 ),
                               ),
-                              const SizedBox(height: 48),
+                              const SizedBox(height: 20),
 
                               // Form Card
                               Container(
@@ -295,7 +295,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 32),
+                              const SizedBox(height: 20),
 
                               // Sign in mention
                               Row(
@@ -326,7 +326,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ),
                       ),
                     ),
-                  ),
 
                   // Footer
                   Container(
@@ -363,7 +362,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                 ],
               ),
-            ),
           ),
         ),
       ),
